@@ -53,18 +53,18 @@ namespace Raytracer
                     Vector3 color = new Vector3(0, 0, 0);
                     for (int s = 0; s < samples; s++)
                     {
-                        var u = (i + DoubleHelper.randomDouble()) / (imageWidth - 1);
-                        var v = (j + DoubleHelper.randomDouble()) / (imageHeight - 1);
+                        var u = (i + DoubleHelper.RandomDouble()) / (imageWidth - 1);
+                        var v = (j + DoubleHelper.RandomDouble()) / (imageHeight - 1);
                         Ray r = camera.GetRay(u, v);
-                        color += Color.rayColor(r, world, maxDepth);
+                        color += Color.RayColor(r, world, maxDepth);
                     }
-                    var s_col = Color.getColor(color, samples);
+                    var s_col = Color.GetColor(color, samples);
                     img_map[derivedIndex - 1, i] = s_col;
 
                 });
             });
             var renderTime = stopWatch.Elapsed;
-            Color.writeArrayToPPM(sw, img_map);
+            Color.WriteArrayToPPM(sw, img_map);
             var writeTime = stopWatch.Elapsed;
 
             Console.WriteLine();

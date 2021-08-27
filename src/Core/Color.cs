@@ -27,7 +27,7 @@ namespace Raytracer.Core
                 return new Vector3(0, 0, 0);
             }
 
-            Vector3 unitDirection = Vector3.Normalize(ray.direction);
+            Vector3 unitDirection = Vector3.Normalize(ray.Direction);
             var t = 0.5f * (unitDirection.Y + 1.0f);
             return (float)(1.0 - t) * new Vector3(1.0f, 1.0f, 1.0f) + (float)t * new Vector3(0.5f, 0.7f, 1.0f);
         }

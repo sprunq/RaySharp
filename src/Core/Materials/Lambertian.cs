@@ -13,9 +13,9 @@ namespace Raytracer.Core.Hitables
             _albedo = albedo;
         }
 
-        public override bool scatter(Ray r_in, ref HitRecord rec, out Vector3 attenuation, out Ray scattered)
+        public override bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3 attenuation, out Ray scattered)
         {
-            var scatterDirection = rec.normal + Vector3Helper.randomUnitVector();
+            var scatterDirection = rec.normal + Vector3Helper.RandomUnitVector();
 
             if (Vector3Helper.IsVector3NearZero(scatterDirection))
             {

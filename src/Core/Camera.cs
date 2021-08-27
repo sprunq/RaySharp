@@ -13,21 +13,21 @@ namespace Raytracer.Core
         private Vector3 _u, _v, _w;
         private double _lendRadius;
 
-        public Camera(Vector3 look_from, Vector3 look_at, Vector3 vector_up, double field_of_view, double aspect_ratio, double aperture, double focus_distance)
+        public Camera(Vector3 lookFrom, Vector3 lookAt, Vector3 vectorUp, double fieldOfView, double aspectRatio, double aperture, double focusDistance)
         {
-            var theta = Converter.ConvertToRadians(field_of_view);
+            var theta = Converter.ConvertToRadians(fieldOfView);
             var h = Math.Tan(theta / 2);
             var viewportHeight = 2.0 * h;
-            var viewportWidth = aspect_ratio * viewportHeight;
+            var viewportWidth = aspectRatio * viewportHeight;
 
-            _w = Vector3.Normalize(look_from - look_at);
-            _u = Vector3.Normalize(Vector3.Cross(vector_up, _w));
+            _w = Vector3.Normalize(lookFrom - lookAt);
+            _u = Vector3.Normalize(Vector3.Cross(vectorUp, _w));
             _v = Vector3.Cross(_w, _u);
 
-            _origin = look_from;
-            _horizontal = (float)focus_distance * (float)viewportWidth * _u;
-            _vertical = (float)focus_distance * (float)viewportHeight * _v;
-            _lowerLeftCorner = _origin - _horizontal / 2 - _vertical / 2 - (float)focus_distance * _w;
+            _origin = lookFrom;
+            _horizontal = (float)focusDistance * (float)viewportWidth * _u;
+            _vertical = (float)focusDistance * (float)viewportHeight * _v;
+            _lowerLeftCorner = _origin - _horizontal / 2 - _vertical / 2 - (float)focusDistance * _w;
             _lendRadius = aperture / 2;
         }
 

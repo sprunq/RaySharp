@@ -15,12 +15,12 @@ namespace Raytracer.Core.Hitables
             _fuzziness = fuzziness < 1 ? fuzziness : 1;
         }
 
-        public override bool scatter(Ray ray_in, ref HitRecord rec, out Vector3 attenuation, out Ray scattered)
+        public override bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3 attenuation, out Ray scattered)
         {
-            var reflected = reflect(Vector3.Normalize(ray_in.direction), rec.normal);
-            scattered = new Ray(rec.position, reflected + (float)_fuzziness * Vector3Helper.randomInUnitSphere());
+            var reflected = reflect(Vector3.Normalize(rayIn.Direction), rec.normal);
+            scattered = new Ray(rec.position, reflected + (float)_fuzziness * Vector3Helper.RandomInUnitSphere());
             attenuation = _albedo;
-            return (Vector3.Dot(scattered.direction, rec.normal) > 0);
+            return (Vector3.Dot(scattered.Direction, rec.normal) > 0);
         }
     }
 }

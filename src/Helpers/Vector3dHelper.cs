@@ -51,10 +51,10 @@ namespace Raytracer.Helpers
                 return p;
             }
         }
-        public static bool IsVector3NearZero(Vector3 to_check)
+        public static bool IsVector3NearZero(Vector3 toCheck)
         {
             var s = 1e-8;
-            return (Math.Abs(to_check.X) < s) && (Math.Abs(to_check.Y) < s) && (Math.Abs(to_check.Z) < s);
+            return (Math.Abs(toCheck.X) < s) && (Math.Abs(toCheck.Y) < s) && (Math.Abs(toCheck.Z) < s);
         }
     }
 }

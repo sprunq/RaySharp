@@ -14,11 +14,11 @@ namespace Raytracer.Core.Hitables
             _indexOfRefraction = indexOfRefraction;
         }
 
-        public override bool Scatter(Ray r_in, ref HitRecord rec, out Vector3 attenuation, out Ray scattered)
+        public override bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3 attenuation, out Ray scattered)
         {
             attenuation = new Vector3(1);
             double refractionRatio = rec.frontFace ? (1.0 / _indexOfRefraction) : _indexOfRefraction;
-            Vector3 unitDirection = Vector3.Normalize(r_in.Direction);
+            Vector3 unitDirection = Vector3.Normalize(rayIn.Direction);
 
             double cosTheta = Math.Min(Vector3.Dot(-unitDirection, rec.normal), 1.0);
             double sinTheta = Math.Sqrt(1.0 - cosTheta * cosTheta);
