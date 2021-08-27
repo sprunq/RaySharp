@@ -1,10 +1,8 @@
-using System;
-using System.IO;
 using System.Numerics;
 using Raytracer.Core.Materials;
-using Raytracer.Common;
+using Raytracer.Helpers;
 
-namespace Raytracer.Core.Hittables
+namespace Raytracer.Core.Hitables
 {
     class Lambertian : Material
     {
@@ -17,9 +15,9 @@ namespace Raytracer.Core.Hittables
 
         public override bool scatter(Ray r_in, ref HitRecord rec, out Vector3 attenuation, out Ray scattered)
         {
-            var scatterDirection = rec.normal + Helpers.randomUnitVector();
+            var scatterDirection = rec.normal + Vector3Helper.randomUnitVector();
 
-            if (Helpers.Vector3NearZero(scatterDirection))
+            if (Vector3Helper.IsVector3NearZero(scatterDirection))
             {
                 scatterDirection = rec.normal;
             }

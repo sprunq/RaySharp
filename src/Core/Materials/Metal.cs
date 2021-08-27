@@ -1,10 +1,8 @@
-using System;
-using System.IO;
 using System.Numerics;
 using Raytracer.Core.Materials;
-using Raytracer.Common;
+using Raytracer.Helpers;
 
-namespace Raytracer.Core.Hittables
+namespace Raytracer.Core.Hitables
 {
     class Metal : Material
     {
@@ -19,8 +17,8 @@ namespace Raytracer.Core.Hittables
 
         public override bool scatter(Ray r_in, ref HitRecord rec, out Vector3 attenuation, out Ray scattered)
         {
-            var reflected = Helpers.reflect(Vector3.Normalize(r_in.dir), rec.normal);
-            scattered = new Ray(rec.p, reflected + (float)fuzz * Helpers.randomInUnitSphere());
+            var reflected = reflect(Vector3.Normalize(r_in.dir), rec.normal);
+            scattered = new Ray(rec.p, reflected + (float)fuzz * Vector3Helper.randomInUnitSphere());
             attenuation = albedo;
             return (Vector3.Dot(scattered.dir, rec.normal) > 0);
         }

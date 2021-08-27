@@ -1,7 +1,7 @@
 using System.Numerics;
 using Raytracer.Core.Materials;
 
-namespace Raytracer.Core.Hittables
+namespace Raytracer.Core.Hitables
 {
     struct HitRecord
     {
@@ -18,7 +18,7 @@ namespace Raytracer.Core.Hittables
         }
     };
 
-    abstract class Hittable
+    abstract class Hitable
     {
         public abstract bool hit(Ray r, double t_min, double t_max, ref HitRecord rec);
     }

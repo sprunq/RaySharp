@@ -1,6 +1,6 @@
 using System;
-using System.IO;
 using System.Numerics;
+using Raytracer.Helpers;
 
 namespace Raytracer.Core
 {
@@ -10,22 +10,33 @@ namespace Raytracer.Core
         private Vector3 lower_left_corner;
         private Vector3 horizontal;
         private Vector3 vertical;
+        private Vector3 u, v, w;
+        private double lens_radius;
 
-        public Camera()
+        public Camera(Vector3 lookfrom, Vector3 lookat, Vector3 vup, double vert_fov, double aspect_ratio, double aperture, double focus_dist)
         {
-            var aspect_ratio = 16.0 / 9.0;
-            var viewport_height = 2.0;
+            var theta = Converter.ConvertToRadians(vert_fov);
+            var h = Math.Tan(theta / 2);
+            var viewport_height = 2.0 * h;
             var viewport_width = aspect_ratio * viewport_height;
-            var focal_length = 1.0;
-            origin = Vector3.Zero;
-            horizontal = new Vector3((float)viewport_width, 0, 0);
-            vertical = new Vector3(0, (float)viewport_height, 0);
-            lower_left_corner = origin - horizontal / 2 - vertical / 2 - new Vector3(0, 0, (float)focal_length);
+
+            w = Vector3.Normalize(lookfrom - lookat);
+            u = Vector3.Normalize(Vector3.Cross(vup, w));
+            v = Vector3.Cross(w, u);
+
+            origin = lookfrom;
+            horizontal = (float)focus_dist * (float)viewport_width * u;
+            vertical = (float)focus_dist * (float)viewport_height * v;
+            lower_left_corner = origin - horizontal / 2 - vertical / 2 - (float)focus_dist * w;
+            lens_radius = aperture / 2;
         }
 
-        public Ray GetRay(double u, double v)
+        public Ray GetRay(double s, double t)
         {
-            return new Ray(origin, lower_left_corner + (float)u * horizontal + (float)v * vertical - origin);
+            Vector3 rd = (float)lens_radius * Vector3Helper.RandomInUnitDisk();
+            Vector3 offest = u * rd.X + v * rd.Y;
+            return new Ray(origin + offest,
+                           lower_left_corner + (float)s * horizontal + (float)t * vertical - origin - offest);
         }
     }
 }

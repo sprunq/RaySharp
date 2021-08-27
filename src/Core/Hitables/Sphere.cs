@@ -1,11 +1,10 @@
 using System;
-using System.IO;
 using System.Numerics;
 using Raytracer.Core.Materials;
 
-namespace Raytracer.Core.Hittables
+namespace Raytracer.Core.Hitables
 {
-    class Sphere : Hittable
+    class Sphere : Hitable
     {
         public Vector3 center;
         public double radius;
