@@ -6,14 +6,14 @@ namespace Raytracer.Core.Materials
 {
     abstract class Material
     {
-        public abstract bool scatter(Ray r_in, ref HitRecord rec, out Vector3 attenuation, out Ray scattered);
+        public abstract bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3 attenuation, out Ray scattered);
 
-        public static Vector3 refract(Vector3 uv, Vector3 n, double etai_over_etat)
+        public static Vector3 refract(Vector3 uv, Vector3 n, double refractionRatio)
         {
-            var cos_theta = Math.Min(Vector3.Dot(-uv, n), 1.0);
-            Vector3 r_out_perp = (float)etai_over_etat * (uv + (float)cos_theta * n);
-            Vector3 r_out_parallel = -(float)Math.Sqrt(Math.Abs(1.0f - r_out_perp.LengthSquared())) * n;
-            return r_out_perp + r_out_parallel;
+            var cosTheta = Math.Min(Vector3.Dot(-uv, n), 1.0);
+            Vector3 rayOutPerpendicular = (float)refractionRatio * (uv + (float)cosTheta * n);
+            Vector3 rayOutParallel = -(float)Math.Sqrt(Math.Abs(1.0f - rayOutPerpendicular.LengthSquared())) * n;
+            return rayOutPerpendicular + rayOutParallel;
         }
 
         public static Vector3 reflect(Vector3 v, Vector3 n)

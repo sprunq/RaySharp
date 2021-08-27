@@ -6,11 +6,11 @@ namespace Raytracer.Core.Hitables
 {
     class Lambertian : Material
     {
-        public Vector3 albedo;
+        private Vector3 _albedo;
 
-        public Lambertian(Vector3 a)
+        public Lambertian(Vector3 albedo)
         {
-            albedo = a;
+            _albedo = albedo;
         }
 
         public override bool scatter(Ray r_in, ref HitRecord rec, out Vector3 attenuation, out Ray scattered)
@@ -22,8 +22,8 @@ namespace Raytracer.Core.Hitables
                 scatterDirection = rec.normal;
             }
 
-            scattered = new Ray(rec.p, scatterDirection);
-            attenuation = albedo;
+            scattered = new Ray(rec.position, scatterDirection);
+            attenuation = _albedo;
             return true;
         }
     }

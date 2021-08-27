@@ -5,34 +5,34 @@ namespace Raytracer.Helpers
 {
     class Vector3Helper
     {
-        public static Vector3 randomVec3()
+        public static Vector3 RandomVec3()
         {
-            return new Vector3((float)DoubleHelper.randomDouble(), (float)DoubleHelper.randomDouble(), (float)DoubleHelper.randomDouble());
+            return new Vector3((float)DoubleHelper.RandomDouble(), (float)DoubleHelper.RandomDouble(), (float)DoubleHelper.RandomDouble());
         }
 
-        public static Vector3 randomVec3(double min, double max)
+        public static Vector3 RandomVec3(double min, double max)
         {
-            return new Vector3((float)DoubleHelper.randomDouble(min, max), (float)DoubleHelper.randomDouble(min, max), (float)DoubleHelper.randomDouble(min, max));
+            return new Vector3((float)DoubleHelper.RandomDouble(min, max), (float)DoubleHelper.RandomDouble(min, max), (float)DoubleHelper.RandomDouble(min, max));
         }
 
-        public static Vector3 randomInUnitSphere()
+        public static Vector3 RandomInUnitSphere()
         {
             while (true)
             {
-                var p = randomVec3(-1, 1);
+                var p = RandomVec3(-1, 1);
                 if (p.LengthSquared() >= 1)
                     continue;
                 return p;
             }
         }
-        public static Vector3 randomUnitVector()
+        public static Vector3 RandomUnitVector()
         {
-            return Vector3.Normalize(randomInUnitSphere());
+            return Vector3.Normalize(RandomInUnitSphere());
         }
 
-        public static Vector3 randomInHemisphere(Vector3 normal)
+        public static Vector3 RandomInHemisphere(Vector3 normal)
         {
-            Vector3 inUnitSphere = randomInUnitSphere();
+            Vector3 inUnitSphere = RandomInUnitSphere();
             if (Vector3.Dot(inUnitSphere, normal) > 0.0)
             {
                 return inUnitSphere;
@@ -46,7 +46,7 @@ namespace Raytracer.Helpers
         {
             while (true)
             {
-                var p = new Vector3((float)DoubleHelper.randomDouble(-1, 1), (float)DoubleHelper.randomDouble(-1, 1), 0);
+                var p = new Vector3((float)DoubleHelper.RandomDouble(-1, 1), (float)DoubleHelper.RandomDouble(-1, 1), 0);
                 if (p.LengthSquared() >= 1) continue;
                 return p;
             }

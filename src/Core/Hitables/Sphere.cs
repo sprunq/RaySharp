@@ -6,25 +6,25 @@ namespace Raytracer.Core.Hitables
 {
     class Sphere : Hitable
     {
-        public Vector3 center;
-        public double radius;
-        public Material material;
+        private Vector3 _center;
+        private double _radius;
+        private Material _material;
 
         public Sphere() { }
 
-        public Sphere(Vector3 cen, double r, Material m)
+        public Sphere(Vector3 center, double radius, Material material)
         {
-            center = cen;
-            radius = r;
-            material = m;
+            _center = center;
+            _radius = radius;
+            _material = material;
         }
 
-        public override bool hit(Ray r, double t_min, double t_max, ref HitRecord rec)
+        public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
-            Vector3 oc = r.orig - center;
-            var a = r.dir.LengthSquared();
-            var half_b = Vector3.Dot(oc, r.dir);
-            var c = oc.LengthSquared() - radius * radius;
+            Vector3 originCenter = ray.Origin - _center;
+            var a = ray.Direction.LengthSquared();
+            var half_b = Vector3.Dot(originCenter, ray.Direction);
+            var c = originCenter.LengthSquared() - _radius * _radius;
 
             var discriminant = half_b * half_b - a * c;
 
@@ -33,24 +33,24 @@ namespace Raytracer.Core.Hitables
                 return false;
             }
 
-            var sqrtd = Math.Sqrt(discriminant);
+            var sqrtDiscriminant = Math.Sqrt(discriminant);
 
             // Find the nearest root that lies in the acceptable range.
-            var root = (-half_b - sqrtd) / a;
-            if (root < t_min || t_max < root)
+            var root = (-half_b - sqrtDiscriminant) / a;
+            if (root < tMin || tMax < root)
             {
-                root = (-half_b + sqrtd) / a;
-                if (root < t_min || t_max < root)
+                root = (-half_b + sqrtDiscriminant) / a;
+                if (root < tMin || tMax < root)
                 {
                     return false;
                 }
             }
 
             rec.t = root;
-            rec.p = r.at(rec.t);
-            Vector3 outward_normal = (rec.p - center) / (float)radius;
-            rec.set_face_normal(r, outward_normal);
-            rec.material = material;
+            rec.position = ray.At(rec.t);
+            Vector3 outward_normal = (rec.position - _center) / (float)_radius;
+            rec.set_face_normal(ray, outward_normal);
+            rec.material = _material;
 
             return true;
         }

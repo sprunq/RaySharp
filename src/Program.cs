@@ -15,18 +15,18 @@ namespace Raytracer
         {
             // Image
             const float aspectRatio = 3.0f / 2.0f;
-            const int imageWidth = 1000;
+            const int imageWidth = 500;
             const int imageHeight = (int)(imageWidth / aspectRatio);
-            const int samples = 1;
+            const int samples = 50;
             const int maxDepth = 50;
 
             // Camera
-            Vector3 lookfrom = new(13, 2, 3);
-            Vector3 lookat = new(0, 0, 0);
+            Vector3 lookfrom = new(8, 1.5f, 2);
+            Vector3 lookat = new(0, 0.4f, -0.25f);
             Vector3 vup = new(0, 1, 0);
             var dist_to_focus = 10;
-            var aperture = 0.1;
-            var fov = 25;
+            var aperture = 0.05;
+            var fov = 27;
 
             Camera camera = new(lookfrom, lookat, vup, fov, aspectRatio, aperture, dist_to_focus);
 
@@ -46,7 +46,7 @@ namespace Raytracer
             int progress = 0;
             Parallel.For(0, max_h, (j) =>
             {
-                Console.WriteLine($"Running Line {++progress}/{imageHeight} \t[{((float)progress / imageHeight * 100.0).ToString("0.00")}%]");
+                Console.WriteLine($"Rendering Line {++progress}/{imageHeight} \t[{((float)progress / imageHeight * 100.0).ToString("0.00")}%]");
                 int derivedIndex = max_h - j;
                 Parallel.For(0, max_w, (i) =>
                 {

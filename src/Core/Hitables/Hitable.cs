@@ -5,21 +5,21 @@ namespace Raytracer.Core.Hitables
 {
     struct HitRecord
     {
-        public Vector3 p;
+        public Vector3 position;
         public Vector3 normal;
         public Material material;
         public double t;
-        public bool front_face;
+        public bool frontFace;
 
-        public void set_face_normal(Ray ray, Vector3 outward_normal)
+        public void set_face_normal(Ray ray, Vector3 outwardNormal)
         {
-            front_face = Vector3.Dot(ray.dir, outward_normal) < 0;
-            normal = front_face ? outward_normal : -outward_normal;
+            frontFace = Vector3.Dot(ray.Direction, outwardNormal) < 0;
+            normal = frontFace ? outwardNormal : -outwardNormal;
         }
     };
 
     abstract class Hitable
     {
-        public abstract bool hit(Ray r, double t_min, double t_max, ref HitRecord rec);
+        public abstract bool Hit(Ray r, double tMin, double tMax, ref HitRecord rec);
     }
 }

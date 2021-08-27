@@ -14,31 +14,31 @@ namespace Raytracer.Core.Hitables
             _indexOfRefraction = indexOfRefraction;
         }
 
-        public override bool scatter(Ray r_in, ref HitRecord rec, out Vector3 attenuation, out Ray scattered)
+        public override bool Scatter(Ray r_in, ref HitRecord rec, out Vector3 attenuation, out Ray scattered)
         {
             attenuation = new Vector3(1);
-            double refractionRatio = rec.front_face ? (1.0 / _indexOfRefraction) : _indexOfRefraction;
-            Vector3 unit_direction = Vector3.Normalize(r_in.dir);
+            double refractionRatio = rec.frontFace ? (1.0 / _indexOfRefraction) : _indexOfRefraction;
+            Vector3 unitDirection = Vector3.Normalize(r_in.Direction);
 
-            double cos_theta = Math.Min(Vector3.Dot(-unit_direction, rec.normal), 1.0);
-            double sin_theta = Math.Sqrt(1.0 - cos_theta * cos_theta);
+            double cosTheta = Math.Min(Vector3.Dot(-unitDirection, rec.normal), 1.0);
+            double sinTheta = Math.Sqrt(1.0 - cosTheta * cosTheta);
 
-            bool cannot_refract = refractionRatio * sin_theta > 1.0;
+            bool cannotRefract = refractionRatio * sinTheta > 1.0;
             Vector3 direction;
 
-            if (cannot_refract || reflectance(cos_theta, refractionRatio) > DoubleHelper.randomDouble())
-                direction = reflect(unit_direction, rec.normal);
+            if (cannotRefract || reflectance(cosTheta, refractionRatio) > DoubleHelper.RandomDouble())
+                direction = reflect(unitDirection, rec.normal);
             else
-                direction = refract(unit_direction, rec.normal, refractionRatio);
+                direction = refract(unitDirection, rec.normal, refractionRatio);
 
-            scattered = new Ray(rec.p, direction);
+            scattered = new Ray(rec.position, direction);
             return true;
         }
 
-        private static double reflectance(double cosine, double ref_idx)
+        private static double reflectance(double cosine, double refractionIndex)
         {
-            // Use Schlick's approximation for reflectance.
-            var r0 = (1 - ref_idx) / (1 + ref_idx);
+            // Schlick's approximation for reflectance
+            var r0 = (1 - refractionIndex) / (1 + refractionIndex);
             r0 = r0 * r0;
             return r0 + (1 - r0) * Math.Pow((1 - cosine), 5);
         }

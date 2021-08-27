@@ -4,19 +4,19 @@ namespace Raytracer.Core
 {
     class Ray
     {
-        public Vector3 orig;
-        public Vector3 dir;
+        public Vector3 origin;
+        public Vector3 direction;
 
         public Ray() { }
         public Ray(Vector3 origin, Vector3 direction)
         {
-            orig = origin;
-            dir = direction;
+            this.origin = origin;
+            this.direction = direction;
         }
 
-        public Vector3 at(double t)
+        public Vector3 At(double t)
         {
-            return orig + Vector3.Multiply((float)t, dir);
+            return origin + Vector3.Multiply((float)t, direction);
         }
     }
 }
