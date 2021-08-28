@@ -4,16 +4,22 @@ namespace Raytracer.Helpers
 {
     class DoubleHelper
     {
+        private static readonly Random random = new Random(0);
+        private static readonly object syncLock = new object();
         public static double RandomDouble()
         {
-            Random rand = new();
-            return rand.NextDouble();
+            lock (syncLock)
+            {
+                return random.NextDouble();
+            }
         }
 
         public static double RandomDouble(double min, double max)
         {
-            Random rand = new();
-            return min + (max - min) * rand.NextDouble();
+            lock (syncLock)
+            {
+                return min + (max - min) * random.NextDouble();
+            }
         }
     }
 }
