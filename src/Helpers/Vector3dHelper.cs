@@ -7,12 +7,12 @@ namespace Raytracer.Helpers
     {
         public static Vector3 RandomVec3()
         {
-            return new Vector3((float)DoubleHelper.RandomDouble(), (float)DoubleHelper.RandomDouble(), (float)DoubleHelper.RandomDouble());
+            return new Vector3((float)RandomHelper.RandomDouble(), (float)RandomHelper.RandomDouble(), (float)RandomHelper.RandomDouble());
         }
 
         public static Vector3 RandomVec3(double min, double max)
         {
-            return new Vector3((float)DoubleHelper.RandomDouble(min, max), (float)DoubleHelper.RandomDouble(min, max), (float)DoubleHelper.RandomDouble(min, max));
+            return new Vector3((float)RandomHelper.RandomDouble(min, max), (float)RandomHelper.RandomDouble(min, max), (float)RandomHelper.RandomDouble(min, max));
         }
 
         public static Vector3 RandomInUnitSphere()
@@ -46,7 +46,7 @@ namespace Raytracer.Helpers
         {
             while (true)
             {
-                var p = new Vector3((float)DoubleHelper.RandomDouble(-1, 1), (float)DoubleHelper.RandomDouble(-1, 1), 0);
+                var p = new Vector3((float)RandomHelper.RandomDouble(-1, 1), (float)RandomHelper.RandomDouble(-1, 1), 0);
                 if (p.LengthSquared() >= 1) continue;
                 return p;
             }

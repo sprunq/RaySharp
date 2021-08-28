@@ -26,7 +26,7 @@ namespace Raytracer.Core.Hitables
             bool cannotRefract = refractionRatio * sinTheta > 1.0;
             Vector3 direction;
 
-            if (cannotRefract || reflectance(cosTheta, refractionRatio) > DoubleHelper.RandomDouble())
+            if (cannotRefract || reflectance(cosTheta, refractionRatio) > RandomHelper.RandomDouble())
                 direction = reflect(unitDirection, rec.normal);
             else
                 direction = refract(unitDirection, rec.normal, refractionRatio);

@@ -19,7 +19,7 @@ namespace Raytracer
             const float aspectRatio = 3.0f / 2.0f;
             const int imageWidth = 400;
             const int imageHeight = (int)(imageWidth / aspectRatio);
-            const int samples = 100;
+            const int samples = 30;
             const int maxDepth = 50;
 
             // Camera
@@ -58,8 +58,8 @@ namespace Raytracer
                     Vector3 color = new Vector3(0, 0, 0);
                     for (int s = 0; s < samples; s++)
                     {
-                        var u = (i + DoubleHelper.RandomDouble()) / (imageWidth - 1);
-                        var v = (j + DoubleHelper.RandomDouble()) / (imageHeight - 1);
+                        var u = (i + RandomHelper.RandomDouble()) / (imageWidth - 1);
+                        var v = (j + RandomHelper.RandomDouble()) / (imageHeight - 1);
                         Ray r = camera.GetRay(u, v);
                         color += Color.RayColor(r, world, maxDepth);
                     }

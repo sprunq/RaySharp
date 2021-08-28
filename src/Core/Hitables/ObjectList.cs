@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Numerics;
 using Raytracer.Helpers;
 using Raytracer.Core.Materials;
+using System.Linq;
+using Raytracer.Core.Textures;
 
 namespace Raytracer.Core.Hitables
 {
@@ -49,15 +51,15 @@ namespace Raytracer.Core.Hitables
         {
             ObjectList world = new();
 
-            var materialGround = new Lambertian(new Vector3(0.5f, 0.5f, 0.5f));
-            world.Add(new Sphere(new Vector3(0.0f, -1000f, 0.0f), 1000.0, materialGround));
+            var checkerTexture = new CheckerTexture(Vector3.Zero, Vector3.One);
+            world.Add(new Sphere(new Vector3(0.0f, -1000f, 0.0f), 1000.0, new Lambertian(checkerTexture)));
 
             for (int a = -11; a < 11; a++)
             {
                 for (int b = -11; b < 11; b++)
                 {
-                    var materialType = DoubleHelper.RandomDouble();
-                    Vector3 center = new(a + 0.9f * (float)DoubleHelper.RandomDouble(), 0.2f, b + 0.9f * (float)DoubleHelper.RandomDouble());
+                    var materialType = RandomHelper.RandomDouble();
+                    Vector3 center = new(a + 0.9f * (float)RandomHelper.RandomDouble(), 0.2f, b + 0.9f * (float)RandomHelper.RandomDouble());
 
                     if ((center - new Vector3(4, 0.2f, 0)).Length() > 0.9)
                     {
@@ -74,7 +76,7 @@ namespace Raytracer.Core.Hitables
                         {
                             // metal
                             var albedo = Vector3Helper.RandomVec3();
-                            var fuzz = DoubleHelper.RandomDouble();
+                            var fuzz = RandomHelper.RandomDouble();
                             material = new Metal(albedo, fuzz);
                             world.Add(new Sphere(center, 0.2, material));
                         }
@@ -97,6 +99,25 @@ namespace Raytracer.Core.Hitables
             world.Add(new Sphere(new Vector3(4, 0.5f, 0), 0.5, metal));
 
             return world;
+        }
+
+        public override bool BoundingBox(ref AABB outputBox)
+        {
+            if (!objects.Any())
+            {
+                return false;
+            }
+
+            AABB tempBox = new();
+            bool firstBox = true;
+
+            foreach (var obj in objects)
+            {
+                if (!obj.BoundingBox(ref tempBox)) return false;
+                outputBox = firstBox ? tempBox : AABB.SurroundingBox(outputBox, tempBox);
+                firstBox = false;
+            }
+            return true;
         }
     }
 }

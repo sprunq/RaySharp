@@ -10,8 +10,8 @@ namespace Raytracer.Core
         public Ray() { }
         public Ray(Vector3 origin, Vector3 direction)
         {
-            this.Origin = origin;
-            this.Direction = direction;
+            Origin = origin;
+            Direction = direction;
         }
 
         public Vector3 At(double t)

@@ -87,5 +87,27 @@ namespace Raytracer.Core.Hitables
 
             return true;
         }
+
+        public override bool BoundingBox(ref AABB outputBox)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*
+        public bool BoundingBox(AABB output_box)
+        {
+            Vec3 min(fmin(v0.x(), fmin(v1.x(), v2.x())),
+                        fmin(v0.y(), fmin(v1.y(), v2.y())), 
+                        fmin(v0.z(), fmin(v1.z(), v2.z())));
+
+            Vec3 max(fmax(v0.x(), fmax(v1.x(), v2.x())),
+                        fmax(v0.y(), fmax(v1.y(), v2.y())),
+                        fmax(v0.z(), fmax(v1.z(), v2.z())));
+
+            output_box = AABB(min, max);
+
+            return true;
+        }
+        */
     }
 }

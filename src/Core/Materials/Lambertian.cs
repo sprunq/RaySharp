@@ -1,14 +1,20 @@
 using System.Numerics;
 using Raytracer.Core.Materials;
 using Raytracer.Helpers;
+using Raytracer.Core.Textures;
 
 namespace Raytracer.Core.Hitables
 {
     class Lambertian : Material
     {
-        private Vector3 _albedo;
+        private Texture _albedo;
 
         public Lambertian(Vector3 albedo)
+        {
+            _albedo = new SolidColor(albedo);
+        }
+
+        public Lambertian(Texture albedo)
         {
             _albedo = albedo;
         }
@@ -23,7 +29,7 @@ namespace Raytracer.Core.Hitables
             }
 
             scattered = new Ray(rec.position, scatterDirection);
-            attenuation = _albedo;
+            attenuation = _albedo.Value(rec.u, rec.v, rec.position);
             return true;
         }
     }

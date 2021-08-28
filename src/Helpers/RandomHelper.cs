@@ -2,7 +2,7 @@ using System;
 
 namespace Raytracer.Helpers
 {
-    class DoubleHelper
+    class RandomHelper
     {
         private static readonly Random random = new Random(0);
         private static readonly object syncLock = new object();
@@ -20,6 +20,11 @@ namespace Raytracer.Helpers
             {
                 return min + (max - min) * random.NextDouble();
             }
+        }
+
+        public static int RandomInt(int min, int max)
+        {
+            return (int)RandomDouble(min, max + 1);
         }
     }
 }

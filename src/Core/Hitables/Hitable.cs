@@ -9,6 +9,8 @@ namespace Raytracer.Core.Hitables
         public Vector3 normal;
         public Material material;
         public double t;
+        public double u;
+        public double v;
         public bool frontFace;
 
         public void set_face_normal(Ray ray, Vector3 outwardNormal)
@@ -20,6 +22,7 @@ namespace Raytracer.Core.Hitables
 
     abstract class Hitable
     {
-        public abstract bool Hit(Ray r, double tMin, double tMax, ref HitRecord rec);
+        public abstract bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec);
+        public abstract bool BoundingBox(ref AABB outputBox);
     }
 }
