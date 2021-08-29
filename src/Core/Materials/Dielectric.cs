@@ -1,7 +1,7 @@
 using System;
 using System.Numerics;
 using Raytracer.Core.Materials;
-using Raytracer.Helpers;
+using Raytracer.Utility;
 
 namespace Raytracer.Core.Hitables
 {

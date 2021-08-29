@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Raytracer.Core.Hitables;
-using Raytracer.Helpers;
+using Raytracer.Utility;
 
 namespace Raytracer.Core
 {

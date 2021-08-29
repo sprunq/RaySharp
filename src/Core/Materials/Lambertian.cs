@@ -1,6 +1,6 @@
 using System.Numerics;
 using Raytracer.Core.Materials;
-using Raytracer.Helpers;
+using Raytracer.Utility;
 using Raytracer.Core.Textures;
 
 namespace Raytracer.Core.Hitables

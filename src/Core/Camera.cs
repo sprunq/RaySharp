@@ -1,6 +1,6 @@
 using System;
 using System.Numerics;
-using Raytracer.Helpers;
+using Raytracer.Utility;
 
 namespace Raytracer.Core
 {
@@ -15,7 +15,7 @@ namespace Raytracer.Core
 
         public Camera(Vector3 lookFrom, Vector3 lookAt, Vector3 vectorUp, double fieldOfView, double aspectRatio, double aperture, double focusDistance)
         {
-            var theta = Converter.ConvertToRadians(fieldOfView);
+            var theta = GeneralHelper.ConvertToRadians(fieldOfView);
             var h = Math.Tan(theta / 2);
             var viewportHeight = 2.0 * h;
             var viewportWidth = aspectRatio * viewportHeight;
