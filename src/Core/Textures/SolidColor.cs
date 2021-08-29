@@ -1,14 +1,15 @@
 using System.Numerics;
+using OpenTK.Mathematics;
 
 namespace Raytracer.Core.Textures
 {
     class SolidColor : Texture
     {
-        private Vector3 _color;
+        private Vector3d _color;
 
         public SolidColor() { }
 
-        public SolidColor(Vector3 color)
+        public SolidColor(Vector3d color)
         {
             _color = color;
         }
@@ -18,7 +19,7 @@ namespace Raytracer.Core.Textures
             _color = Color.RgbNormalizedVector((int)r, (int)g, (int)b);
         }
 
-        public override Vector3 Value(double u, double v, Vector3 p)
+        public override Vector3d Value(double u, double v, Vector3d p)
         {
             return _color;
         }

@@ -1,18 +1,19 @@
 using System;
 using System.Numerics;
+using OpenTK.Mathematics;
 using Raytracer.Core.Materials;
 
 namespace Raytracer.Core.Hitables
 {
     class Sphere : Hitable
     {
-        private Vector3 _center;
+        private Vector3d _center;
         private double _radius;
         private Material _material;
 
         public Sphere() { }
 
-        public Sphere(Vector3 center, double radius, Material material)
+        public Sphere(Vector3d center, double radius, Material material)
         {
             _center = center;
             _radius = radius;
@@ -21,10 +22,10 @@ namespace Raytracer.Core.Hitables
 
         public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
-            Vector3 originCenter = ray.Origin - _center;
-            var a = ray.Direction.LengthSquared();
-            var half_b = Vector3.Dot(originCenter, ray.Direction);
-            var c = originCenter.LengthSquared() - _radius * _radius;
+            Vector3d originCenter = ray.Origin - _center;
+            var a = ray.Direction.LengthSquared;
+            var half_b = Vector3d.Dot(originCenter, ray.Direction);
+            var c = originCenter.LengthSquared - _radius * _radius;
 
             var discriminant = half_b * half_b - a * c;
 
@@ -48,7 +49,7 @@ namespace Raytracer.Core.Hitables
 
             rec.t = root;
             rec.position = ray.At(rec.t);
-            Vector3 outward_normal = (rec.position - _center) / (float)_radius;
+            Vector3d outward_normal = (rec.position - _center) / _radius;
             rec.set_face_normal(ray, outward_normal);
             GetSphereUV(outward_normal, ref rec.u, ref rec.v);
             rec.material = _material;
@@ -56,7 +57,7 @@ namespace Raytracer.Core.Hitables
             return true;
         }
 
-        private static void GetSphereUV(Vector3 p, ref double u, ref double v)
+        private static void GetSphereUV(Vector3d p, ref double u, ref double v)
         {
             // p: a given point on the sphere of radius one, centered at the origin.
             // u: returned value [0,1] of angle around the Y axis from X=-1.
@@ -74,8 +75,8 @@ namespace Raytracer.Core.Hitables
 
         public override bool BoundingBox(ref AABB outputBox)
         {
-            outputBox = new AABB(_center - new Vector3((float)_radius, (float)_radius, (float)_radius),
-                                 _center + new Vector3((float)_radius, (float)_radius, (float)_radius));
+            outputBox = new AABB(_center - new Vector3d(_radius, _radius, _radius),
+                                 _center + new Vector3d(_radius, _radius, _radius));
             return true;
         }
 

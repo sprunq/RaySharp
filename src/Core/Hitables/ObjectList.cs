@@ -4,6 +4,9 @@ using Raytracer.Utility;
 using Raytracer.Core.Materials;
 using System.Linq;
 using Raytracer.Core.Textures;
+using OpenTK.Mathematics;
+using ObjLoader.Loader.Loaders;
+using System.IO;
 
 namespace Raytracer.Core.Hitables
 {
@@ -27,6 +30,28 @@ namespace Raytracer.Core.Hitables
             objects.Add(obj);
         }
 
+        public void AddObjModel(string path, Vector3d offset, Material material)
+        {
+
+            var objLoaderFactory = new ObjLoaderFactory();
+            var objLoader = objLoaderFactory.Create();
+            FileStream fileStream = File.OpenRead(path);
+            var result = objLoader.Load(fileStream);
+            var vertcies = result.Vertices;
+
+            foreach (var f in result.Groups[0].Faces)
+            {
+                var v0 = f[0].VertexIndex - 1;
+                var v1 = f[1].VertexIndex - 1;
+                var v2 = f[2].VertexIndex - 1;
+
+                Add(new Triangle(new Vector3d(vertcies[v0].X + offset.X, vertcies[v0].Y + offset.Y, vertcies[v0].Z + offset.Z),
+                                 new Vector3d(vertcies[v1].X + offset.X, vertcies[v1].Y + offset.Y, vertcies[v1].Z + offset.Z),
+                                 new Vector3d(vertcies[v2].X + offset.X, vertcies[v2].Y + offset.Y, vertcies[v2].Z + offset.Z),
+                                 material));
+            }
+        }
+
 
         public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
@@ -46,7 +71,6 @@ namespace Raytracer.Core.Hitables
 
             return hasHitAnything;
         }
-
 
 
         public override bool BoundingBox(ref AABB outputBox)

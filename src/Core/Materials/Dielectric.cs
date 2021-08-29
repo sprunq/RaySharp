@@ -1,5 +1,6 @@
 using System;
 using System.Numerics;
+using OpenTK.Mathematics;
 using Raytracer.Core.Materials;
 using Raytracer.Utility;
 
@@ -14,17 +15,17 @@ namespace Raytracer.Core.Hitables
             _indexOfRefraction = indexOfRefraction;
         }
 
-        public override bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3 attenuation, out Ray scattered)
+        public override bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3d attenuation, out Ray scattered)
         {
-            attenuation = new Vector3(1);
+            attenuation = new Vector3d(1);
             double refractionRatio = rec.frontFace ? (1.0 / _indexOfRefraction) : _indexOfRefraction;
-            Vector3 unitDirection = Vector3.Normalize(rayIn.Direction);
+            Vector3d unitDirection = Vector3d.Normalize(rayIn.Direction);
 
-            double cosTheta = Math.Min(Vector3.Dot(-unitDirection, rec.normal), 1.0);
+            double cosTheta = Math.Min(Vector3d.Dot(-unitDirection, rec.normal), 1.0);
             double sinTheta = Math.Sqrt(1.0 - cosTheta * cosTheta);
 
             bool cannotRefract = refractionRatio * sinTheta > 1.0;
-            Vector3 direction;
+            Vector3d direction;
 
             if (cannotRefract || reflectance(cosTheta, refractionRatio) > RandomHelper.RandomDouble())
                 direction = reflect(unitDirection, rec.normal);

@@ -2,6 +2,7 @@ using System.Numerics;
 using Raytracer.Core.Materials;
 using Raytracer.Utility;
 using Raytracer.Core.Textures;
+using OpenTK.Mathematics;
 
 namespace Raytracer.Core.Hitables
 {
@@ -9,7 +10,7 @@ namespace Raytracer.Core.Hitables
     {
         private Texture _albedo;
 
-        public Lambertian(Vector3 albedo)
+        public Lambertian(Vector3d albedo)
         {
             _albedo = new SolidColor(albedo);
         }
@@ -19,7 +20,7 @@ namespace Raytracer.Core.Hitables
             _albedo = albedo;
         }
 
-        public override bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3 attenuation, out Ray scattered)
+        public override bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3d attenuation, out Ray scattered)
         {
             var scatterDirection = rec.normal + Vector3Helper.RandomUnitVector();
 

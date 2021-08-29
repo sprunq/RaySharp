@@ -1,24 +1,25 @@
 using System;
 using System.Numerics;
+using OpenTK.Mathematics;
 using Raytracer.Core.Hitables;
 
 namespace Raytracer.Core.Materials
 {
     abstract class Material
     {
-        public abstract bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3 attenuation, out Ray scattered);
+        public abstract bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3d attenuation, out Ray scattered);
 
-        public static Vector3 refract(Vector3 uv, Vector3 n, double refractionRatio)
+        public static Vector3d refract(Vector3d uv, Vector3d n, double refractionRatio)
         {
-            var cosTheta = Math.Min(Vector3.Dot(-uv, n), 1.0);
-            Vector3 rayOutPerpendicular = (float)refractionRatio * (uv + (float)cosTheta * n);
-            Vector3 rayOutParallel = -(float)Math.Sqrt(Math.Abs(1.0f - rayOutPerpendicular.LengthSquared())) * n;
+            var cosTheta = Math.Min(Vector3d.Dot(-uv, n), 1.0);
+            Vector3d rayOutPerpendicular = refractionRatio * (uv + cosTheta * n);
+            Vector3d rayOutParallel = -Math.Sqrt(Math.Abs(1.0f - rayOutPerpendicular.LengthSquared)) * n;
             return rayOutPerpendicular + rayOutParallel;
         }
 
-        public static Vector3 reflect(Vector3 v, Vector3 n)
+        public static Vector3d reflect(Vector3d v, Vector3d n)
         {
-            return v - 2 * Vector3.Dot(v, n) * n;
+            return v - 2 * Vector3d.Dot(v, n) * n;
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Numerics;
+using OpenTK.Mathematics;
 using Raytracer.Core.Materials;
 
 namespace Raytracer.Core.Hitables
@@ -8,11 +9,11 @@ namespace Raytracer.Core.Hitables
     {
         private Material _material;
 
-        public Vector3 v0, v1, v2;
+        public Vector3d v0, v1, v2;
 
         public Triangle() { }
 
-        public Triangle(Vector3 x, Vector3 y, Vector3 z, Material material)
+        public Triangle(Vector3d x, Vector3d y, Vector3d z, Material material)
         {
             v0 = x;
             v1 = y;
@@ -31,8 +32,8 @@ namespace Raytracer.Core.Hitables
             var v0v1 = v1 - v0;
             var v0v2 = v2 - v0;
 
-            Vector3 pvec = Vector3.Cross(ray.Direction, v0v2);
-            double det = Vector3.Dot(v0v1, pvec);
+            Vector3d pvec = Vector3d.Cross(ray.Direction, v0v2);
+            double det = Vector3d.Dot(v0v1, pvec);
 
             double kEpsilon = Double.Epsilon;
 
@@ -54,21 +55,21 @@ namespace Raytracer.Core.Hitables
 
             double invDet = 1 / det;
 
-            Vector3 tvec = ray.Origin - v0;
-            double u = Vector3.Dot(tvec, pvec) * invDet;
+            Vector3d tvec = ray.Origin - v0;
+            double u = Vector3d.Dot(tvec, pvec) * invDet;
             if (u < 0 || u > 1)
             {
                 return false;
             }
 
-            Vector3 qvec = Vector3.Cross(tvec, v0v1);
-            double v = Vector3.Dot(ray.Direction, qvec) * invDet;
+            Vector3d qvec = Vector3d.Cross(tvec, v0v1);
+            double v = Vector3d.Dot(ray.Direction, qvec) * invDet;
             if (v < 0 || u + v > 1)
             {
                 return false;
             }
 
-            double t = Vector3.Dot(v0v2, qvec) * invDet;
+            double t = Vector3d.Dot(v0v2, qvec) * invDet;
 
             // For multiple objects, we take the closest one
             if (t < tMin || tMax < t)
@@ -77,10 +78,10 @@ namespace Raytracer.Core.Hitables
             }
 
             // Hit Record
-            //rec.u = u;
-            //rec.v = v;
+            rec.u = u;
+            rec.v = v;
             rec.t = t;
-            Vector3 outward_normal = Vector3.Cross(v0v1, v0v2);
+            Vector3d outward_normal = Vector3d.Cross(v0v1, v0v2);
             rec.set_face_normal(ray, outward_normal);
             rec.material = _material;
             rec.position = ray.At(t);

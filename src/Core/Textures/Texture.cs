@@ -1,9 +1,10 @@
 using System.Numerics;
+using OpenTK.Mathematics;
 
 namespace Raytracer.Core.Textures
 {
     abstract class Texture
     {
-        public abstract Vector3 Value(double u, double v, Vector3 p);
+        public abstract Vector3d Value(double u, double v, Vector3d p);
     }
 }
