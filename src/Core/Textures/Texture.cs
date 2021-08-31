@@ -1,4 +1,3 @@
-using System.Numerics;
 using OpenTK.Mathematics;
 
 namespace Raytracer.Core.Textures

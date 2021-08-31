@@ -23,29 +23,29 @@ namespace Raytracer.Core
             return Origin + Vector3d.Multiply(Direction, t);
         }
 
-        public static Vector3d RayColor(Ray ray, Hitable world, int depth)
+        public static Vector3d RayColor(Ray ray, Vector3d background, Hitable world, int depth)
         {
             HitRecord rec = new();
 
-            if (depth <= 0)
+            if (world.Hit(ray, 0.001, Double.MaxValue, ref rec))
             {
-                return new Vector3d(0, 0, 0);
-            }
+                Ray scattered;
+                Vector3d attenuation;
+                Vector3d emitted = rec.material.Emitted(rec.u, rec.v, rec.position);
 
-            if (world.Hit(ray, 0.001, Double.PositiveInfinity, ref rec))
-            {
-                Ray scattered = new();
-                Vector3d attenuation = new();
-                if (rec.material.Scatter(ray, ref rec, out attenuation, out scattered))
+                if (depth > 0 && rec.material.Scatter(ray, ref rec, out attenuation, out scattered))
                 {
-                    return attenuation * RayColor(scattered, world, depth - 1);
+                    return emitted + attenuation * Ray.RayColor(scattered, background, world, depth - 1);
                 }
-                return new Vector3d(0, 0, 0);
+                else
+                {
+                    return emitted;
+                }
             }
-
-            Vector3d unitDirection = Vector3d.Normalize(ray.Direction);
-            var t = 0.5f * (unitDirection.Y + 1.0f);
-            return (1.0 - t) * new Vector3d(1.0f, 1.0f, 1.0f) + t * new Vector3d(0.5f, 0.7f, 1.0f);
+            else
+            {
+                return background;
+            }
         }
 
         public static Vector3d GetColor(Vector3d color, int samples)

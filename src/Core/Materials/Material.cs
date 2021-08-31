@@ -8,6 +8,7 @@ namespace Raytracer.Core.Materials
     abstract class Material
     {
         public abstract bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3d attenuation, out Ray scattered);
+        public virtual Vector3d Emitted(double u, double v, Vector3d p) { return Vector3d.Zero; }
 
         public static Vector3d refract(Vector3d uv, Vector3d n, double refractionRatio)
         {

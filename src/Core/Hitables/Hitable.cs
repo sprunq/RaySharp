@@ -14,7 +14,7 @@ namespace Raytracer.Core.Hitables
         public double v;
         public bool frontFace;
 
-        public void set_face_normal(Ray ray, Vector3d outwardNormal)
+        public void SetFaceNormal(Ray ray, Vector3d outwardNormal)
         {
             frontFace = Vector3d.Dot(ray.Direction, outwardNormal) < 0;
             normal = frontFace ? outwardNormal : -outwardNormal;

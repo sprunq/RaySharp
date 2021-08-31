@@ -50,7 +50,7 @@ namespace Raytracer.Core.Hitables
             rec.t = root;
             rec.position = ray.At(rec.t);
             Vector3d outward_normal = (rec.position - _center) / _radius;
-            rec.set_face_normal(ray, outward_normal);
+            rec.SetFaceNormal(ray, outward_normal);
             GetSphereUV(outward_normal, ref rec.u, ref rec.v);
             rec.material = _material;
 

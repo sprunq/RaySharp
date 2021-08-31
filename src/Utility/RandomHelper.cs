@@ -4,7 +4,7 @@ namespace Raytracer.Utility
 {
     class RandomHelper
     {
-        private static readonly Random random = new Random(0);
+        private static readonly Random random = new Random(42);
         private static readonly object syncLock = new object();
         public static double RandomDouble()
         {

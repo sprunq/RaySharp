@@ -82,33 +82,27 @@ namespace Raytracer.Core.Hitables
             rec.v = v;
             rec.t = t;
             Vector3d outward_normal = Vector3d.Cross(v0v1, v0v2);
-            rec.set_face_normal(ray, outward_normal);
+            rec.SetFaceNormal(ray, outward_normal);
             rec.material = _material;
             rec.position = ray.At(t);
 
             return true;
         }
 
-        public override bool BoundingBox(ref AABB outputBox)
+        public override bool BoundingBox(ref AABB output_box)
         {
-            throw new NotImplementedException();
-        }
+            Vector3d min = new(Math.Min(v0.X, Math.Min(v1.X, v2.X)),
+                        Math.Min(v0.Y, Math.Min(v1.Y, v2.Y)),
+                        Math.Min(v0.Z, Math.Min(v1.Z, v2.Z)));
 
-        /*
-        public bool BoundingBox(AABB output_box)
-        {
-            Vec3 min(fmin(v0.x(), fmin(v1.x(), v2.x())),
-                        fmin(v0.y(), fmin(v1.y(), v2.y())), 
-                        fmin(v0.z(), fmin(v1.z(), v2.z())));
+            Vector3d max = new(Math.Max(v0.X, Math.Max(v1.X, v2.X)),
+                        Math.Max(v0.Y, Math.Max(v1.Y, v2.Y)),
+                        Math.Max(v0.Z, Math.Max(v1.Z, v2.Z)));
 
-            Vec3 max(fmax(v0.x(), fmax(v1.x(), v2.x())),
-                        fmax(v0.y(), fmax(v1.y(), v2.y())),
-                        fmax(v0.z(), fmax(v1.z(), v2.z())));
-
-            output_box = AABB(min, max);
+            output_box = new AABB(min, max);
 
             return true;
         }
-        */
+
     }
 }
