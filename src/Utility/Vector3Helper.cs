@@ -57,5 +57,10 @@ namespace Raytracer.Utility
             var s = 1e-8;
             return (Math.Abs(toCheck.X) < s) && (Math.Abs(toCheck.Y) < s) && (Math.Abs(toCheck.Z) < s);
         }
+
+        public static Vector3d RgbNormalizedVector(int r, int g, int b)
+        {
+            return new Vector3d(255.0 / r, 255.0 / g, 255.0 / b);
+        }
     }
 }

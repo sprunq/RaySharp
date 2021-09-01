@@ -30,7 +30,7 @@ namespace Raytracer.Core.Hitables
             objects.Add(obj);
         }
 
-        public void AddObjModel(string path, Vector3d offset, Material material)
+        public void AddObjModel(string path, Vector3d offset, Material material, double scale)
         {
             var objLoaderFactory = new ObjLoaderFactory();
             var objLoader = objLoaderFactory.Create();
@@ -40,14 +40,14 @@ namespace Raytracer.Core.Hitables
 
             foreach (var f in result.Groups[0].Faces)
             {
-                var v0 = f[0].VertexIndex - 1;
-                var v1 = f[1].VertexIndex - 1;
-                var v2 = f[2].VertexIndex - 1;
+                var v0 = (f[0].VertexIndex - 1);
+                var v1 = (f[1].VertexIndex - 1);
+                var v2 = (f[2].VertexIndex - 1);
 
-                Add(new Triangle(new Vector3d(vertcies[v0].X + offset.X, vertcies[v0].Y + offset.Y, vertcies[v0].Z + offset.Z),
-                                       new Vector3d(vertcies[v1].X + offset.X, vertcies[v1].Y + offset.Y, vertcies[v1].Z + offset.Z),
-                                       new Vector3d(vertcies[v2].X + offset.X, vertcies[v2].Y + offset.Y, vertcies[v2].Z + offset.Z),
-                                       material));
+                Add(new Triangle(new Vector3d(vertcies[v0].X * scale + offset.X, vertcies[v0].Y * scale + offset.Y, vertcies[v0].Z * scale + offset.Z),
+                                 new Vector3d(vertcies[v1].X * scale + offset.X, vertcies[v1].Y * scale + offset.Y, vertcies[v1].Z * scale + offset.Z),
+                                 new Vector3d(vertcies[v2].X * scale + offset.X, vertcies[v2].Y * scale + offset.Y, vertcies[v2].Z * scale + offset.Z),
+                                 material));
             }
         }
 

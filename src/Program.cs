@@ -10,18 +10,17 @@ namespace Raytracer
         {
             Raytracer raytracer = new(imageWidth: 800,
                                       aspectRatio: 3.0 / 2.0,
-                                      samples: 1,
+                                      samples: 400,
                                       maxDepth: 50,
                                       shouldDenoise: true,
                                       outputName: "output.png",
                                       outputFolder: Path.GetFullPath(@"..\Renders"),
                                       printProgress: true);
 
-            raytracer.LoadScene(Scene.MixedScene);
+            raytracer.LoadScene(Scene.BunnyScene);
             raytracer.Render();
             raytracer.SaveImage();
         }
     }
-
 }
 

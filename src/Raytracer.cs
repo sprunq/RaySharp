@@ -46,7 +46,7 @@ namespace Raytracer
             _outputFolder = outputFolder;
             _printProgress = printProgress;
 
-            _background = new(0.5);
+            _background = new(1);
         }
 
         public void Render()
