@@ -94,7 +94,6 @@ namespace Raytracer.Core.Hitables
             return hasHitAnything;
         }
 
-
         public override bool BoundingBox(ref AABB outputBox)
         {
             if (!objects.Any())

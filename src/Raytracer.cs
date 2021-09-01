@@ -28,12 +28,13 @@ namespace Raytracer
         private int _maxDepth;
         private int _samples;
         private bool _denoise;
+        private string _denoiserPath;
         private string _outputName;
         private string _outputFolder;
         private bool _printProgress;
 
 
-        public Raytracer(int imageWidth, double aspectRatio, int samples, int maxDepth, bool shouldDenoise, string outputName, string outputFolder, bool printProgress)
+        public Raytracer(int imageWidth, double aspectRatio, int samples, int maxDepth, bool shouldDenoise, string denoiserPath, string outputName, string outputFolder, bool printProgress)
         {
             _imageWidth = imageWidth;
             _aspectRatio = aspectRatio;
@@ -42,6 +43,7 @@ namespace Raytracer
             _maxDepth = maxDepth;
 
             _denoise = shouldDenoise;
+            _denoiserPath = denoiserPath;
             _outputName = outputName;
             _outputFolder = outputFolder;
             _printProgress = printProgress;
@@ -95,7 +97,7 @@ namespace Raytracer
                 Stopwatch denoiseTimer = new();
                 denoiseTimer.Start();
 
-                string path = Path.GetFullPath(Path.Combine(@"..\Denoiser\Denoiser_v2.4\", "Denoiser.exe"));
+                string path = Path.GetFullPath(Path.Combine(_denoiserPath, "Denoiser.exe"));
                 string outputPath = Path.Combine(_outputFolder, "denoised_" + _outputName);
                 string parameters = $"-i {savePath} -o {outputPath}";
 
