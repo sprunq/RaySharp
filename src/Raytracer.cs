@@ -113,11 +113,11 @@ namespace Raytracer
             }
         }
 
-        public delegate void Loader(ref double aspectRatio, ref Vector3d background, out ObjectList world, out Camera camera);
+        public delegate void SceneCaller(ref double aspectRatio, ref Vector3d background, out ObjectList world, out Camera camera);
 
-        public void LoadScene(Loader func)
+        public void LoadScene(SceneCaller loadScene)
         {
-            func(ref _aspectRatio, ref _background, out World, out Camera);
+            loadScene(ref _aspectRatio, ref _background, out World, out Camera);
         }
     }
 }
