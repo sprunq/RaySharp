@@ -1,15 +1,15 @@
 using Raytracer.Core;
-using Raytracer.Core.Hitables;
-using Raytracer.Core.Textures;
+using Raytracer.Hitables;
+using Raytracer.Textures;
 using OpenTK.Mathematics;
-using Raytracer.Core.Instances;
-using Raytracer.Core.Materials;
+using Raytracer.Instances;
+using Raytracer.Materials;
 
 namespace Raytracer.Scenes
 {
-    partial class Scene
+    public partial class Scene
     {
-        public static void BunnyScene(ref double _aspectRatio, ref Vector3d background, out ObjectList world, out Camera camera)
+        public static void ModelScene(ref double _aspectRatio, ref Vector3d background, out ObjectList world, out Camera camera)
         {
             Vector3d lookfrom = new(-50, 12, 0);
             Vector3d lookat = new(1, 11.5, 0);
@@ -25,10 +25,11 @@ namespace Raytracer.Scenes
             background = new Vector3d(0);
 
             // Skybox
-            var tSkybox = new ImageTexture(@"..\Textures\HDRI Maps\sunflowers.jpg", 1, 0);
+            var tSkybox = new ImageTexture(@"..\Textures\HDRI Maps\hilly_terrain.jpg", 1, 0);
             var mSkybox = new Light(tSkybox);
-            var hSkybox = new Sphere(new Vector3d(0, -50, 0), 1000, mSkybox);
-            world.Add(hSkybox);
+            var hSkybox = new Sphere(new Vector3d(0, -10, 0), 1000, mSkybox);
+            var roSkybox = new Rotate(hSkybox, 90, Axis.Y);
+            //world.Add(roSkybox);
 
             // Ground
             var tWood = new ImageTexture(@"..\Textures\wood_planks.jpg", 300, 0);
@@ -37,26 +38,26 @@ namespace Raytracer.Scenes
             world.Add(hground);
 
             // Box
-            var mBox = new Metal(new Vector3d(1, 1, 1), 0.5);
+            var mBox = new Lambertian(new Vector3d(1, 1, 1));
             var hBack = new YZRect(new Vector2d(-50, 50), new Vector2d(-50, 50), 5, mBox);
             var hLeft = new XYRect(new Vector2d(-40, 40), new Vector2d(-40, 40), 20, mBox);
             var hRight = new XYRect(new Vector2d(-40, 40), new Vector2d(-40, 40), -20, mBox);
-            var hTop = new XZRect(new Vector2d(-30, 30), new Vector2d(-30, 30), 20, mBox);
-            //world.Add(hBack);
-            //world.Add(hLeft);
-            //world.Add(hRight);
-            //world.Add(hTop);
+            var hTop = new XZRect(new Vector2d(-30, 30), new Vector2d(-30, 30), 40, mBox);
+            world.Add(hBack);
+            world.Add(hLeft);
+            world.Add(hRight);
+            world.Add(hTop);
 
 
             void AddPillar(double boxWidth, double boxHeight, double sphereSize, double angle, Vector3d offset, Material mBox, Material mSphere, ref ObjectList world)
             {
                 var hBox = new Box(new Vector3d(-boxWidth / 2.0, 0, -boxWidth / 2.0), new Vector3d(boxWidth / 2.0, boxHeight, boxWidth / 2.0), mBox);
-                var roBox = new RotateY(hBox, angle);
+                var roBox = new Rotate(hBox, angle, Axis.Y);
                 var trBox = new Translate(roBox, new Vector3d(-boxWidth, 0, 0) + offset);
                 world.Add(trBox);
 
                 var hSphere = new Sphere(new Vector3d(0, sphereSize, 0), sphereSize, mSphere);
-                var roSphere = new RotateY(hSphere, angle);
+                var roSphere = new Rotate(hSphere, angle, Axis.Y);
                 var trSphere = new Translate(roSphere, new Vector3d(-boxWidth, boxHeight, 0) + offset);
                 world.Add(trSphere);
             }
@@ -76,14 +77,14 @@ namespace Raytracer.Scenes
                       angle: 40,
                       offset: new Vector3d(-7, 0, 12),
                       mBox: new Lambertian(new Vector3d(1)),
-                      mSphere: new Dielectric(1.5),
+                      mSphere: new Dielectric(1.5, new Vector3d(1)),
                       ref world);
 
 
             // Lights
-            var mLMain = new Light(new Vector3d(10, 10, 10));
-            var hLMain = new Sphere(new Vector3d(-40, 30, 5), 5, mLMain);
-            //world.Add(hLMain);
+            var mLMain = new Light(new Vector3d(5));
+            var hLMain = new Sphere(new Vector3d(-20, 40, 0), 6, mLMain);
+            world.Add(hLMain);
 
             var mL1 = new Light(new Vector3d(10, 0, 0));
             var hL1 = new Sphere(new Vector3d(-10, 3, -5), 3, mL1);
@@ -98,17 +99,23 @@ namespace Raytracer.Scenes
             world.Add(hL3);
 
             // Bunny Model
-            var bunnyHeight = 4.0;
+            var modelHeightOffset = 4.0;
             var mBunnyBox = new Lambertian(new Vector3d(1));
-            var hBox = new Box(new Vector3d(0, 0, 0), new Vector3d(10, 5 + bunnyHeight, 10), mBunnyBox);
+            var hBox = new Box(new Vector3d(0, 0, 0), new Vector3d(10, 5 + modelHeightOffset, 10), mBunnyBox);
             var trBox = new Translate(hBox, new Vector3d(-5, 0, -5));
             world.Add(trBox);
 
-            var gray = new Lambertian(new Vector3d(0.5, 0.2, 0.6));
-            var pos = new Vector3d(0, 2.8 + bunnyHeight, -0.7);
-            world.AddObjModel(@"..\Models\bunny.obj", pos, gray, 60);
-            var hBunnySphere = new Sphere(new Vector3d(-3, 13, 0), 4, gray);
-            //world.Add(hBunnySphere);
+            var mModelLambert = new Lambertian(new Vector3d(0.3, 0, 0.5));
+            var mModelGlass = new Dielectric(1.5, new Vector3d(0.1, 0, 0.3));
+            var mModelMetal = new Metal(new Vector3d(0.3, 1, 0.8), 0.1);
+            var hModel = new BVHNode(ObjectList.GetObjFaces(@"..\Models\statue\12328_Statue_v1_L2.obj",
+                                                            @"..\Models\statue\12328_Statue_v1_L2.mtl",
+                                                            mModelGlass,
+                                                            0.1));
+            var roXModel = new Rotate(hModel, 90, Axis.X);
+            var roYModel = new Rotate(roXModel, 90, Axis.Y);
+            var trModel = new Translate(roYModel, new Vector3d(0, 2.8 + modelHeightOffset, 0.1));
+            world.Add(trModel);
         }
     }
 }

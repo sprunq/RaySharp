@@ -1,10 +1,11 @@
 using System.Numerics;
-using Raytracer.Core.Materials;
+using Raytracer.Materials;
 using OpenTK.Mathematics;
+using Raytracer.Core;
 
-namespace Raytracer.Core.Hitables
+namespace Raytracer.Hitables
 {
-    struct HitRecord
+    public struct HitRecord
     {
         public Vector3d position;
         public Vector3d normal;
@@ -21,7 +22,7 @@ namespace Raytracer.Core.Hitables
         }
     };
 
-    abstract class Hitable
+    public abstract class Hitable
     {
         public abstract bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec);
         public abstract bool BoundingBox(ref AABB outputBox);

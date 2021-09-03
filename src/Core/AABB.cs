@@ -1,47 +1,72 @@
-using System;
-using System.Numerics;
+// AABB & BVH Code mostly from: https://github.com/Herbstein/SharpRays
+
 using OpenTK.Mathematics;
+using Raytracer.Utility;
+
 
 namespace Raytracer.Core
 {
-    class AABB
+    public class AABB
     {
-        public Vector3d Minimum;
         public Vector3d Maximum;
+        public Vector3d Minimum;
 
         public AABB() { }
-        public AABB(Vector3d minimum, Vector3d maximum)
+
+        public AABB(Vector3d v0, Vector3d v1)
         {
-            Minimum = minimum;
-            Maximum = maximum;
+            Minimum = v0;
+            Maximum = v1;
         }
 
         public bool Hit(Ray ray, double tMin, double tMax)
         {
-            for (int a = 0; a < 3; a++)
+            for (var a = 0; a < 3; a++)
             {
-                var t0 = Math.Min((Minimum.X - ray.Origin.X) / ray.Direction.X,
-                               (Maximum.X - ray.Origin.X) / ray.Direction.X);
-                var t1 = Math.Max((Minimum.X - ray.Origin.X) / ray.Direction.X,
-                                  (Maximum.X - ray.Origin.X) / ray.Direction.X);
-                tMin = Math.Max(t0, tMin);
-                tMax = Math.Min(t1, tMax);
+                double invD = 1 / ray.Direction.Get(a);
+                double t0 = (Minimum.Get(a) - ray.Origin.Get(a)) * invD;
+                double t1 = (Maximum.Get(a) - ray.Origin.Get(a)) * invD;
+                if (invD < 0)
+                {
+                    AABB.FastSwap(ref t0, ref t1);
+                }
+
+                tMin = t0 > tMin ? t0 : tMin;
+                tMax = t1 < tMax ? t1 : tMax;
                 if (tMax <= tMin)
+                {
                     return false;
+                }
             }
+
             return true;
+        }
+
+        private static double FastMin(double a, double b)
+        {
+            return a < b ? a : b;
+        }
+
+        private static double FastMax(double a, double b)
+        {
+            return a > b ? a : b;
+        }
+
+        private static void FastSwap(ref double a, ref double b)
+        {
+            double t = a;
+            a = b;
+            b = t;
         }
 
         public static AABB SurroundingBox(AABB box0, AABB box1)
         {
-            Vector3d small = new(Math.Min(box0.Minimum.X, box1.Minimum.X),
-                                Math.Min(box0.Minimum.Y, box1.Minimum.Y),
-                                Math.Min(box0.Minimum.Z, box1.Minimum.Z));
-
-            Vector3d big = new(Math.Max(box0.Maximum.X, box1.Maximum.X),
-                              Math.Max(box0.Maximum.Y, box1.Maximum.Y),
-                              Math.Max(box0.Maximum.Z, box1.Maximum.Z));
-
+            var small = new Vector3d(AABB.FastMin(box0.Minimum.X, box1.Minimum.X),
+                                     AABB.FastMin(box0.Minimum.Y, box1.Minimum.Y),
+                                     AABB.FastMin(box0.Minimum.Z, box1.Minimum.Z));
+            var big = new Vector3d(AABB.FastMax(box0.Maximum.X, box1.Maximum.X),
+                                   AABB.FastMax(box0.Maximum.Y, box1.Maximum.Y),
+                                   AABB.FastMax(box0.Maximum.Z, box1.Maximum.Z));
             return new AABB(small, big);
         }
     }

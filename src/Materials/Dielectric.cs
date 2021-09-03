@@ -1,23 +1,31 @@
 using System;
-using System.Numerics;
 using OpenTK.Mathematics;
-using Raytracer.Core.Materials;
+using Raytracer.Core;
+using Raytracer.Materials;
 using Raytracer.Utility;
 
-namespace Raytracer.Core.Hitables
+namespace Raytracer.Hitables
 {
-    class Dielectric : Material
+    public class Dielectric : Material
     {
         private double _indexOfRefraction;
+        private Vector3d _color;
 
         public Dielectric(double indexOfRefraction)
         {
             _indexOfRefraction = indexOfRefraction;
+            _color = new Vector3d(1);
+        }
+
+        public Dielectric(double indexOfRefraction, Vector3d color)
+        {
+            _indexOfRefraction = indexOfRefraction;
+            _color = color;
         }
 
         public override bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3d attenuation, out Ray scattered)
         {
-            attenuation = new Vector3d(1);
+            attenuation = _color;
             double refractionRatio = rec.frontFace ? (1.0 / _indexOfRefraction) : _indexOfRefraction;
             Vector3d unitDirection = Vector3d.Normalize(rayIn.Direction);
 

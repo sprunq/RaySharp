@@ -2,7 +2,7 @@ using System;
 
 namespace Raytracer.Utility
 {
-    class GeneralHelper
+    public class GeneralHelper
     {
         public static double ConvertToRadians(double angle)
         {

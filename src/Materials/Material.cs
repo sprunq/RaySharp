@@ -1,11 +1,11 @@
 using System;
-using System.Numerics;
 using OpenTK.Mathematics;
-using Raytracer.Core.Hitables;
+using Raytracer.Core;
+using Raytracer.Hitables;
 
-namespace Raytracer.Core.Materials
+namespace Raytracer.Materials
 {
-    abstract class Material
+    public abstract class Material
     {
         public abstract bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3d attenuation, out Ray scattered);
         public virtual Vector3d Emitted(double u, double v, Vector3d p)

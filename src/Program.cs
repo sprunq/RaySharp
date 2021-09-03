@@ -1,14 +1,14 @@
-﻿using System;
-using System.IO;
-using Raytracer.Scenes;
+﻿using System.IO;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Desktop;
 
 namespace Raytracer
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            Raytracer raytracer = new(imageWidth: 400,
+            Raytracer raytracer = new(imageWidth: 1000,
                                       aspectRatio: 3.0 / 2.0,
                                       samples: 1,
                                       maxDepth: 50,
@@ -18,10 +18,16 @@ namespace Raytracer
                                       outputFolder: Path.GetFullPath(@"..\Renders"),
                                       printProgress: true);
 
-            raytracer.LoadScene(Scene.BunnyScene);
-            raytracer.Render();
-            raytracer.SaveImage();
+            var nativeWindowSettings = new NativeWindowSettings()
+            {
+                Size = new Vector2i(raytracer.ImageWidth, raytracer.ImageHeight),
+                Title = "Raytracer",
+            };
+
+            using (var window = new Window(GameWindowSettings.Default, nativeWindowSettings, raytracer))
+            {
+                window.Run();
+            }
         }
     }
 }
-

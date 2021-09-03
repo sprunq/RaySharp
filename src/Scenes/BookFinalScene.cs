@@ -1,13 +1,13 @@
 using Raytracer.Core;
-using Raytracer.Core.Hitables;
-using Raytracer.Core.Textures;
+using Raytracer.Hitables;
+using Raytracer.Textures;
 using OpenTK.Mathematics;
 using Raytracer.Utility;
-using Raytracer.Core.Materials;
+using Raytracer.Materials;
 
 namespace Raytracer.Scenes
 {
-    partial class Scene
+    public partial class Scene
     {
         public static void BookScene(ref double _aspectRatio, ref Vector3d background, out ObjectList world, out Camera camera)
         {

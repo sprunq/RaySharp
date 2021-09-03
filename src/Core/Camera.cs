@@ -1,11 +1,10 @@
 using System;
-using System.Numerics;
 using OpenTK.Mathematics;
 using Raytracer.Utility;
 
 namespace Raytracer.Core
 {
-    class Camera
+    public class Camera
     {
         private Vector3d _origin;
         private Vector3d _lowerLeftCorner;

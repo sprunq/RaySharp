@@ -1,9 +1,10 @@
 using OpenTK.Mathematics;
-using Raytracer.Core.Materials;
+using Raytracer.Core;
+using Raytracer.Materials;
 
-namespace Raytracer.Core.Hitables
+namespace Raytracer.Hitables
 {
-    class XYRect : Hitable
+    public class XYRect : Hitable
     {
         private double _x0;
         private double _x1;

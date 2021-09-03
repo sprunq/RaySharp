@@ -2,7 +2,7 @@ using System;
 
 namespace Raytracer.Utility
 {
-    class RandomHelper
+    public class RandomHelper
     {
         private static readonly Random random = new Random(42);
         private static readonly object syncLock = new object();

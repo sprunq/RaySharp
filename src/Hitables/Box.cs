@@ -1,11 +1,10 @@
-using System;
-using System.Numerics;
 using OpenTK.Mathematics;
-using Raytracer.Core.Materials;
+using Raytracer.Core;
+using Raytracer.Materials;
 
-namespace Raytracer.Core.Hitables
+namespace Raytracer.Hitables
 {
-    class Box : Hitable
+    public class Box : Hitable
     {
         private Vector3d BoxMin;
         private Vector3d BoxMax;

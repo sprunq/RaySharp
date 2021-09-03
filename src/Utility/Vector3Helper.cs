@@ -4,6 +4,23 @@ using OpenTK.Mathematics;
 
 namespace Raytracer.Utility
 {
+    public static class Extensions
+    {
+        public static double Get(this Vector3d v, int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    return v.X;
+                case 1:
+                    return v.Y;
+                case 2:
+                    return v.Z;
+                default:
+                    throw new IndexOutOfRangeException();
+            }
+        }
+    }
     class Vector3Helper
     {
         public static Vector3d RandomVec3()

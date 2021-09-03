@@ -1,12 +1,11 @@
-using System.Numerics;
 using OpenTK.Mathematics;
-using Raytracer.Core.Materials;
-using Raytracer.Core.Textures;
-using Raytracer.Utility;
+using Raytracer.Core;
+using Raytracer.Materials;
+using Raytracer.Textures;
 
-namespace Raytracer.Core.Hitables
+namespace Raytracer.Hitables
 {
-    class Light : Material
+    public class Light : Material
     {
         private Texture _emit;
 

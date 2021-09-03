@@ -1,11 +1,12 @@
 using System;
 using System.Numerics;
 using OpenTK.Mathematics;
-using Raytracer.Core.Materials;
+using Raytracer.Core;
+using Raytracer.Materials;
 
-namespace Raytracer.Core.Hitables
+namespace Raytracer.Hitables
 {
-    class Triangle : Hitable
+    public class Triangle : Hitable
     {
         private Material _material;
 
@@ -37,21 +38,10 @@ namespace Raytracer.Core.Hitables
 
             double kEpsilon = Double.Epsilon;
 
-            //#ifdef CULLING 
-            // if the determinant is negative the triangle is backfacing
-            // if the determinant is close to 0, the ray misses the triangle
             if (det < kEpsilon)
             {
                 return false;
             }
-            //#else 
-            // ray and triangle are parallel if det is close to 0
-            // fabs is extremely slow
-            /*if (fabs(det) < kEpsilon)
-            {
-                return false;
-            }*/
-            //#endif
 
             double invDet = 1 / det;
 
@@ -71,33 +61,37 @@ namespace Raytracer.Core.Hitables
 
             double t = Vector3d.Dot(v0v2, qvec) * invDet;
 
-            // For multiple objects, we take the closest one
             if (t < tMin || tMax < t)
             {
                 return false;
             }
 
-            // Hit Record
-            rec.u = u;
-            rec.v = v;
+            //rec.u = u;
+            //rec.v = v;
             rec.t = t;
             Vector3d outward_normal = Vector3d.Cross(v0v1, v0v2);
             rec.SetFaceNormal(ray, outward_normal);
+            GetTriangleUV(outward_normal, ref rec.u, ref rec.v);
             rec.material = _material;
             rec.position = ray.At(t);
 
             return true;
         }
 
+        public static void GetTriangleUV(Vector3d p, ref double u, ref double v)
+        {
+
+        }
+
         public override bool BoundingBox(ref AABB output_box)
         {
             Vector3d min = new(Math.Min(v0.X, Math.Min(v1.X, v2.X)),
-                        Math.Min(v0.Y, Math.Min(v1.Y, v2.Y)),
-                        Math.Min(v0.Z, Math.Min(v1.Z, v2.Z)));
+                               Math.Min(v0.Y, Math.Min(v1.Y, v2.Y)),
+                               Math.Min(v0.Z, Math.Min(v1.Z, v2.Z)));
 
             Vector3d max = new(Math.Max(v0.X, Math.Max(v1.X, v2.X)),
-                        Math.Max(v0.Y, Math.Max(v1.Y, v2.Y)),
-                        Math.Max(v0.Z, Math.Max(v1.Z, v2.Z)));
+                               Math.Max(v0.Y, Math.Max(v1.Y, v2.Y)),
+                               Math.Max(v0.Z, Math.Max(v1.Z, v2.Z)));
 
             output_box = new AABB(min, max);
 

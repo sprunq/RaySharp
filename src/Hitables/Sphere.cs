@@ -1,11 +1,12 @@
 using System;
 using System.Numerics;
 using OpenTK.Mathematics;
-using Raytracer.Core.Materials;
+using Raytracer.Core;
+using Raytracer.Materials;
 
-namespace Raytracer.Core.Hitables
+namespace Raytracer.Hitables
 {
-    class Sphere : Hitable
+    public class Sphere : Hitable
     {
         private Vector3d _center;
         private double _radius;

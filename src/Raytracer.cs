@@ -2,29 +2,27 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using Raytracer.Core;
-using Raytracer.Core.Hitables;
-using Raytracer.Core.Materials;
-using Raytracer.Core.Textures;
+using Raytracer.Hitables;
 using Raytracer.Utility;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using OpenTK.Mathematics;
-using System.Collections.Generic;
-using Raytracer.Scenes;
+using Raytracer.Core;
+using System.Threading;
 
 namespace Raytracer
 {
-    class Raytracer
+    public class Raytracer
     {
         public Camera Camera;
         public ObjectList World;
+        public int ImageWidth;
+        public int ImageHeight;
+        public Image<Rgba32> RenderImage;
+        public bool FinishedRendering;
 
-        private Image<Rgba32> _renderImage;
         private Vector3d _background;
-        private double _aspectRatio;
-        private int _imageWidth;
-        private int _imageHeight;
+        public double _apectRatio;
         private int _maxDepth;
         private int _samples;
         private bool _denoise;
@@ -36,9 +34,9 @@ namespace Raytracer
 
         public Raytracer(int imageWidth, double aspectRatio, int samples, int maxDepth, bool shouldDenoise, string denoiserPath, string outputName, string outputFolder, bool printProgress)
         {
-            _imageWidth = imageWidth;
-            _aspectRatio = aspectRatio;
-            _imageHeight = (int)(_imageWidth / _aspectRatio);
+            ImageWidth = imageWidth;
+            _apectRatio = aspectRatio;
+            ImageHeight = (int)(ImageWidth / _apectRatio);
             _samples = samples;
             _maxDepth = maxDepth;
 
@@ -48,33 +46,34 @@ namespace Raytracer
             _outputFolder = outputFolder;
             _printProgress = printProgress;
 
+            RenderImage = new Image<Rgba32>(ImageWidth, ImageHeight);
+            FinishedRendering = false;
             _background = new(1);
         }
 
-        public void Render()
+        public async Task Render()
         {
-            _renderImage = new Image<Rgba32>(_imageWidth, _imageHeight);
             Stopwatch stopWatch = new();
             int progress = 0;
             stopWatch.Start();
 
-            Parallel.For(0, _imageHeight, (j) =>
+            Parallel.For(0, ImageHeight, (j) =>
                 {
                     if (_printProgress)
-                        Console.WriteLine($"Rendering Line {++progress}/{_imageHeight} \t[{((float)progress / _imageHeight * 100.0).ToString("0.00")}%]");
-                    int derivedIndex = _imageHeight - j;
-                    Parallel.For(0, _imageWidth, (i) =>
+                        Console.WriteLine($"Rendering Line {++progress}/{ImageHeight} \t[{((float)progress / ImageHeight * 100.0).ToString("0.00")}%]");
+                    int derivedIndex = ImageHeight - j;
+                    Parallel.For(0, ImageWidth, (i) =>
                     {
                         Vector3d color = Vector3d.Zero;
                         for (int s = 0; s < _samples; s++)
                         {
-                            var u = (i + RandomHelper.RandomDouble()) / (_imageWidth - 1);
-                            var v = (j + RandomHelper.RandomDouble()) / (_imageHeight - 1);
+                            var u = (i + RandomHelper.RandomDouble()) / (ImageWidth - 1);
+                            var v = (j + RandomHelper.RandomDouble()) / (ImageHeight - 1);
                             Ray r = Camera.GetRay(u, v);
                             color += Ray.RayColor(r, _background, World, _maxDepth);
                         }
                         var sampledColor = Ray.GetColor(color, _samples);
-                        _renderImage[(int)i, derivedIndex - 1] = new Rgba32((float)sampledColor.X / 255.0f,
+                        RenderImage[(int)i, derivedIndex - 1] = new Rgba32((float)sampledColor.X / 255.0f,
                                                                             (float)sampledColor.Y / 255.0f,
                                                                             (float)sampledColor.Z / 255.0f,
                                                                             1);
@@ -84,13 +83,16 @@ namespace Raytracer
             stopWatch.Stop();
             if (_printProgress)
                 Console.WriteLine($"Render time:\t\t {stopWatch.Elapsed.TotalSeconds.ToString("0.000 s")}");
+
+            Thread.Sleep(100);
+            FinishedRendering = true;
         }
 
         public void SaveImage()
         {
             System.IO.Directory.CreateDirectory(_outputFolder);
             string savePath = Path.Combine(_outputFolder, _outputName);
-            _renderImage.Save(savePath);
+            RenderImage.Save(savePath);
 
             if (_denoise)
             {
@@ -119,7 +121,7 @@ namespace Raytracer
 
         public void LoadScene(SceneCaller loadScene)
         {
-            loadScene(ref _aspectRatio, ref _background, out World, out Camera);
+            loadScene(ref _apectRatio, ref _background, out World, out Camera);
         }
     }
 }

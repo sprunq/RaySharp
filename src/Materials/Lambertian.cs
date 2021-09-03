@@ -1,12 +1,12 @@
-using System.Numerics;
-using Raytracer.Core.Materials;
+using Raytracer.Materials;
 using Raytracer.Utility;
-using Raytracer.Core.Textures;
+using Raytracer.Textures;
 using OpenTK.Mathematics;
+using Raytracer.Core;
 
-namespace Raytracer.Core.Hitables
+namespace Raytracer.Hitables
 {
-    class Lambertian : Material
+    public class Lambertian : Material
     {
         private Texture _albedo;
 

@@ -1,11 +1,11 @@
-using System.Numerics;
 using OpenTK.Mathematics;
-using Raytracer.Core.Materials;
+using Raytracer.Core;
+using Raytracer.Materials;
 using Raytracer.Utility;
 
-namespace Raytracer.Core.Hitables
+namespace Raytracer.Hitables
 {
-    class Metal : Material
+    public class Metal : Material
     {
         private Vector3d _albedo;
         private double _fuzziness;

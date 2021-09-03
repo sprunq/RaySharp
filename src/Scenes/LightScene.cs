@@ -1,11 +1,11 @@
 using Raytracer.Core;
-using Raytracer.Core.Hitables;
-using Raytracer.Core.Textures;
+using Raytracer.Hitables;
+using Raytracer.Textures;
 using OpenTK.Mathematics;
 
 namespace Raytracer.Scenes
 {
-    partial class Scene
+    public partial class Scene
     {
         public static void LightScene(ref double _aspectRatio, ref Vector3d background, out ObjectList world, out Camera camera)
         {
@@ -35,11 +35,11 @@ namespace Raytracer.Scenes
             world.Add(hground);
 
             // Lights
-            var mlightS1 = new Light(new Vector3d(30, 0, 0));
+            var mlightS1 = new Light(new Vector3d(5, 0, 0));
             var hLightS1 = new Sphere(new Vector3d(-2.6, 0.3, 2.5), 0.3, mlightS1);
             world.Add(hLightS1);
 
-            var mlightS2 = new Light(new Vector3d(0, 0, 30));
+            var mlightS2 = new Light(new Vector3d(0, 0, 5));
             var hLightS2 = new Sphere(new Vector3d(-3.2, 0.3, 1.6), 0.3, mlightS2);
             world.Add(hLightS2);
 

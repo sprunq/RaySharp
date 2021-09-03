@@ -1,12 +1,11 @@
 using System;
-using System.Numerics;
 using OpenTK.Mathematics;
-using Raytracer.Core.Hitables;
+using Raytracer.Hitables;
 using Raytracer.Utility;
 
 namespace Raytracer.Core
 {
-    class Ray
+    public class Ray
     {
         public Vector3d Origin;
         public Vector3d Direction;

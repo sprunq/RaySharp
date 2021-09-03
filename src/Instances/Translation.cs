@@ -1,12 +1,13 @@
 using System;
 using System.Numerics;
 using OpenTK.Mathematics;
-using Raytracer.Core.Hitables;
-using Raytracer.Core.Materials;
+using Raytracer.Core;
+using Raytracer.Hitables;
+using Raytracer.Materials;
 
-namespace Raytracer.Core.Instances
+namespace Raytracer.Instances
 {
-    class Translate : Hitable
+    public class Translate : Hitable
     {
         private Hitable _hitable;
         private Vector3d _offset;
