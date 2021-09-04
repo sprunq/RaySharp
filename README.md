@@ -19,6 +19,10 @@ This Denoiser only works well in some cases and makes the image pretty blurry.
 | :------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------: |
 | ![](https://raw.githubusercontent.com/sprunq/RaySharp/main/Pictures/Denoise%20Example/without.png?token=AMNAZ74LFJGSBO37KQVK5NTBHU3HE) | ![](https://raw.githubusercontent.com/sprunq/RaySharp/main/Pictures/Denoise%20Example/with.png?token=AMNAZ7YRTQNT5WNROFWNLL3BHU3H2) |
 
+### Rendering
+
+<div style="text-align:center"><img src="https://raw.githubusercontent.com/sprunq/RaySharp/main/Pictures/Rendering/spiral%20rendering.gif?token=AMNAZ76CDS2CWTCRCAETLILBHU6B2" width="400"/></div>
+
 ### Sources
 
 \- Basic Raytracer Structure [Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html)

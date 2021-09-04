@@ -83,13 +83,7 @@ namespace Raytracer
 
             if (!_raytracer.FinishedRendering)
             {
-                GL.Clear(ClearBufferMask.ColorBufferBit);
-                GL.BindVertexArray(_vertexArrayObject);
-                _previewTexture.UpdateImage(_raytracer.RenderImage);
-                _previewTexture.Use(TextureUnit.Texture0);
-                _shader.Use();
-                GL.DrawElements(PrimitiveType.Triangles, _textureIndices.Length, DrawElementsType.UnsignedInt, 0);
-                SwapBuffers();
+                UpdateLiveTexture();
                 Title = $"Raytracer [{_raytracer.Progress.ToString("0.00%")}]";
 
                 Thread.Sleep(10);
@@ -112,6 +106,12 @@ namespace Raytracer
             else if (input.IsKeyDown(Keys.R))
             {
                 Task.Run(() => _raytracer.RenderSpiral());
+                Thread.Sleep(100);
+            }
+            else if (input.IsKeyDown(Keys.C))
+            {
+                _raytracer.RenderImage = new(_raytracer.ImageWidth, _raytracer.ImageHeight);
+                UpdateLiveTexture();
                 Thread.Sleep(100);
             }
             else if (input.IsKeyDown(Keys.Up))
@@ -147,6 +147,11 @@ namespace Raytracer
         protected override void OnResize(ResizeEventArgs e)
         {
             base.OnResize(e);
+            UpdateLiveTexture();
+        }
+
+        public void UpdateLiveTexture()
+        {
             GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.BindVertexArray(_vertexArrayObject);
@@ -156,6 +161,7 @@ namespace Raytracer
             GL.DrawElements(PrimitiveType.Triangles, _textureIndices.Length, DrawElementsType.UnsignedInt, 0);
             SwapBuffers();
         }
+
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             if (e.Button == MouseButton.Left)

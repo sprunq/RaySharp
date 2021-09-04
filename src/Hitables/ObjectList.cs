@@ -1,14 +1,8 @@
 using System.Collections.Generic;
-using System.Numerics;
-using Raytracer.Utility;
 using Raytracer.Materials;
 using System.Linq;
-using Raytracer.Textures;
 using OpenTK.Mathematics;
-using ObjLoader.Loader.Loaders;
-using System.IO;
 using JeremyAnsel.Media.WavefrontObj;
-using System;
 using Raytracer.Core;
 
 namespace Raytracer.Hitables

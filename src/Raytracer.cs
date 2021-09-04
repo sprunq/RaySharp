@@ -152,7 +152,7 @@ namespace Raytracer
         {
             // Split Image into chunks
             List<Chunk> chunks = new();
-            int chunkSize = 20;
+            int chunkSize = 10;
             int numChunksX = ImageHeight / chunkSize;
             int numChunksY = ImageWidth / chunkSize;
             int leftOverX = ImageHeight % chunkSize;

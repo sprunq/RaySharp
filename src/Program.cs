@@ -9,9 +9,9 @@ namespace Raytracer
     {
         static void Main(string[] args)
         {
-            Raytracer raytracer = new(imageWidth: 1600,
+            Raytracer raytracer = new(imageWidth: 600,
                                       aspectRatio: 3.0 / 2.0,
-                                      samples: 800,
+                                      samples: 20,
                                       maxDepth: 100,
                                       shouldDenoise: true,
                                       denoiserPath: Path.GetFullPath(@"..\Denoiser\"),
@@ -19,7 +19,7 @@ namespace Raytracer
                                       outputFolder: Path.GetFullPath(@"..\Renders"),
                                       printProgress: true);
 
-            raytracer.LoadScene(Scene.ModelScene);
+            raytracer.LoadScene(Scene.BookScene);
 
             var nativeWindowSettings = new NativeWindowSettings()
             {
