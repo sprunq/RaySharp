@@ -16,14 +16,14 @@ namespace Raytracer
         private Vector2i _mdPos;
         private Vector2i _muPos;
 
-        private readonly float[] _vertices =
+        private readonly float[] _textureVertices =
         {
              1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
              1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
             -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
             -1.0f,  1.0f, 0.0f, 0.0f, 1.0f
         };
-        private readonly uint[] _indices =
+        private readonly uint[] _textureIndices =
         {
             0, 1, 3,
             1, 2, 3
@@ -39,18 +39,14 @@ namespace Raytracer
             : base(gameWindowSettings, nativeWindowSettings)
         {
             _raytracer = raytracer;
+            _mdPos = new();
+            _muPos = new();
         }
 
 
         protected override void OnLoad()
         {
             base.OnLoad();
-
-            // Raytracer
-            //Task.Run(() => _raytracer.RenderSpiral());
-
-            _mdPos = new();
-            _muPos = new();
 
             // Live Render
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -60,11 +56,11 @@ namespace Raytracer
 
             _vertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, _textureVertices.Length * sizeof(float), _textureVertices, BufferUsageHint.StaticDraw);
 
             _elementBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, _textureIndices.Length * sizeof(uint), _textureIndices, BufferUsageHint.StaticDraw);
 
             _shader = new Shader("Display/Shaders/shader.vert", "Display/Shaders/shader.frag");
             _shader.Use();
@@ -92,7 +88,7 @@ namespace Raytracer
                 _previewTexture.UpdateImage(_raytracer.RenderImage);
                 _previewTexture.Use(TextureUnit.Texture0);
                 _shader.Use();
-                GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+                GL.DrawElements(PrimitiveType.Triangles, _textureIndices.Length, DrawElementsType.UnsignedInt, 0);
                 SwapBuffers();
                 Title = $"Raytracer [{_raytracer.Progress.ToString("0.00%")}]";
 
@@ -157,7 +153,7 @@ namespace Raytracer
             _previewTexture.UpdateImage(_raytracer.RenderImage);
             _previewTexture.Use(TextureUnit.Texture0);
             _shader.Use();
-            GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(PrimitiveType.Triangles, _textureIndices.Length, DrawElementsType.UnsignedInt, 0);
             SwapBuffers();
         }
         protected override void OnMouseDown(MouseButtonEventArgs e)

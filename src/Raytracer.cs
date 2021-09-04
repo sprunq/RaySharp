@@ -127,6 +127,7 @@ namespace Raytracer
             if (_printProgress)
                 Console.WriteLine($"Render time:\t\t {stopWatch.Elapsed.TotalSeconds.ToString("0.000 s")}");
 
+            // Need to wait for a while since otherwise writing to the image array could be interrupted
             Thread.Sleep(100);
             FinishedRendering = true;
             return Task.CompletedTask;
@@ -248,61 +249,6 @@ namespace Raytracer
                                                                       1);
                     });
                 });
-            }
-
-            stopWatch.Stop();
-            if (_printProgress)
-                Console.WriteLine($"Render time:\t\t {stopWatch.Elapsed.TotalSeconds.ToString("0.000 s")}");
-
-            Thread.Sleep(100);
-            FinishedRendering = true;
-            return Task.CompletedTask;
-        }
-
-        public Task RenderSpiralIncrese()
-        {
-            if (!FinishedRendering)
-            {
-                Console.WriteLine("An Instance is currently rendering. Please wait for it to finish.");
-                return Task.CompletedTask;
-            }
-            FinishedRendering = false;
-            Stopwatch stopWatch = new();
-            stopWatch.Start();
-
-            List<Chunk> chunks = GetSpiralChunks();
-
-            // Rendering
-            float processedChunks = 0;
-            for (int run = 0; run < Samples; run++)
-            {
-                foreach (var chunk in chunks)
-                {
-                    processedChunks++;
-                    Progress = processedChunks / chunks.Count;
-                    Parallel.For(chunk.xStart, chunk.xEnd, (j) =>
-                    {
-                        int derivedIndex = ImageHeight - j;
-                        Parallel.For(chunk.yStart, chunk.yEnd, (i) =>
-                        {
-                            Vector3d color = new Vector3d(RenderImage[i, derivedIndex - 1].R / 255.0f,
-                                                          RenderImage[i, derivedIndex - 1].G / 255.0f,
-                                                          RenderImage[i, derivedIndex - 1].B / 255.0f);
-                            for (int s = 0; s < 5; s++)
-                            {
-                                var u = (i + RandomHelper.RandomDouble()) / (ImageWidth - 1);
-                                var v = (j + RandomHelper.RandomDouble()) / (ImageHeight - 1);
-                                Ray r = Camera.GetRay(u, v);
-                                color += Ray.RayColor(r, _background, World, _maxDepth);
-                            }
-                            var sampledColor = Ray.GetColor(color, Samples);
-                            RenderImage[i, derivedIndex - 1] = new Rgba32((float)sampledColor.X / 255.0f,
-                                                                          (float)sampledColor.Y / 255.0f,
-                                                                          (float)sampledColor.Z / 255.0f,
-                                                                          1);
-                        });
-                    });
-                }
             }
 
             stopWatch.Stop();
