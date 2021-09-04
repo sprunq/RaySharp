@@ -14,9 +14,10 @@ I mainly used this project to learn C# for an upcoming internship. You should ch
 
 Download the compiled binaries or compile this [Project (DeclanRussell/NvidiaAIDenoiser)](https://github.com/DeclanRussell/NvidiaAIDenoiser) yourself and add it as a path in the Raytracer constructor.
 This Denoiser only works well in some cases and makes the image pretty blurry.
-Without Denoiser | With Denoiser
-:-------------------------:|:-------------------------:
-![](https://raw.githubusercontent.com/sprunq/Raytracer/main/Pictures/Denoise%20Example/without.png?token=AMNAZ75MFCFGEZ345QNMY53BHUZJG) | ![](https://raw.githubusercontent.com/sprunq/Raytracer/main/Pictures/Denoise%20Example/with.png?token=AMNAZ75DS4K6KC7PW442MHDBHUZV2)
+
+|                                                            Without Denoiser                                                             |                                                            With Denoiser                                                             |
+| :-------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------: |
+| ![](https://raw.githubusercontent.com/sprunq/Raytracer/main/Pictures/Denoise%20Example/without.png?token=AMNAZ75MFCFGEZ345QNMY53BHUZJG) | ![](https://raw.githubusercontent.com/sprunq/Raytracer/main/Pictures/Denoise%20Example/with.png?token=AMNAZ75DS4K6KC7PW442MHDBHUZV2) |
 
 ### Sources
 
