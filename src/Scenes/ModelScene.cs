@@ -29,7 +29,7 @@ namespace Raytracer.Scenes
             var mSkybox = new Light(tSkybox);
             var hSkybox = new Sphere(new Vector3d(0, -10, 0), 1000, mSkybox);
             var roSkybox = new Rotate(hSkybox, 90, Axis.Y);
-            //world.Add(roSkybox);
+            world.Add(roSkybox);
 
             // Ground
             var tWood = new ImageTexture(@"..\Textures\wood_planks.jpg", 300, 0);
@@ -38,12 +38,12 @@ namespace Raytracer.Scenes
             world.Add(hground);
 
             // Box
-            var checkerTexture = new Lambertian(new CheckerTexture(Vector3d.Zero, Vector3d.One));
+            var checkerTexture = new Lambertian(new CheckerTexture(Vector3d.Zero, Vector3d.One, 0.2));
             var mBox = new Lambertian(new Vector3d(1, 1, 1));
             var hBack = new YZRect(new Vector2d(-50, 50), new Vector2d(-50, 50), 5, checkerTexture);
             var hLeft = new XYRect(new Vector2d(-40, 40), new Vector2d(-40, 40), 20, mBox);
             var hRight = new XYRect(new Vector2d(-40, 40), new Vector2d(-40, 40), -20, mBox);
-            var hTop = new XZRect(new Vector2d(-30, 30), new Vector2d(-30, 30), 40, mBox);
+            var hTop = new XZRect(new Vector2d(-40, 40), new Vector2d(-40, 40), 40, mBox);
             world.Add(hBack);
             world.Add(hLeft);
             world.Add(hRight);
@@ -78,24 +78,24 @@ namespace Raytracer.Scenes
                       angle: 40,
                       offset: new Vector3d(-7, 0, 12),
                       mBox: new Lambertian(new Vector3d(1)),
-                      mSphere: new Dielectric(1.5, new Vector3d(1)),
+                      mSphere: new Dielectric(1.6, new Vector3d(1)),
                       ref world);
 
 
             // Lights
-            var mLMain = new Light(new Vector3d(2));
+            var mLMain = new Light(new Vector3d(4));
             var hLMain = new Sphere(new Vector3d(-20, 40, 0), 6, mLMain);
-            world.Add(hLMain);
+            //world.Add(hLMain);
 
-            var mL1 = new Light(new Vector3d(10, 0, 0));
+            var mL1 = new Light(new Vector3d(20, 0, 0));
             var hL1 = new Sphere(new Vector3d(-10, 3, -5), 3, mL1);
             world.Add(hL1);
 
-            var mL2 = new Light(new Vector3d(0, 10, 0));
+            var mL2 = new Light(new Vector3d(0, 15, 0));
             var hL2 = new Sphere(new Vector3d(-7, 1.6, -1), 1.6, mL2);
             world.Add(hL2);
 
-            var mL3 = new Light(new Vector3d(0, 0, 10));
+            var mL3 = new Light(new Vector3d(0, 0, 15));
             var hL3 = new Sphere(new Vector3d(-13, 1.2, -6.5), 1.2, mL3);
             world.Add(hL3);
 
@@ -107,15 +107,15 @@ namespace Raytracer.Scenes
             world.Add(trBox);
 
             var mModelLambert = new Lambertian(new Vector3d(0.3, 0, 0.5));
-            var mModelGlass = new Dielectric(1.5, new Vector3d(0.1, 0, 0.3));
-            var mModelMetal = new Metal(new Vector3d(0.3, 1, 0.8), 0.1);
-            var hModel = new BVHNode(ObjectList.GetObjFaces(@"..\Models\statue\12328_Statue_v1_L2.obj",
-                                                            @"..\Models\statue\12328_Statue_v1_L2.mtl",
+            var mModelGlass = new Dielectric(1.5, new Vector3d(0.4, 0, 0.5));
+            var mModelMetal = new Metal(new Vector3d(0.2, 0, 0.4), 0.1);
+            var hModel = new BVHNode(ObjectList.GetObjFaces(@"..\Models\lucy.obj",
+                                                            "",
                                                             mModelGlass,
-                                                            0.1));
-            var roXModel = new Rotate(hModel, 90, Axis.X);
-            var roYModel = new Rotate(roXModel, 90, Axis.Y);
-            var trModel = new Translate(roYModel, new Vector3d(0, 2.8 + modelHeightOffset, 0.1));
+                                                            0.065));
+            var roXModel = new Rotate(hModel, 0, Axis.X);
+            var roYModel = new Rotate(roXModel, -90, Axis.Y);
+            var trModel = new Translate(roYModel, new Vector3d(0, 5 + modelHeightOffset, 0));
             world.Add(trModel);
         }
     }

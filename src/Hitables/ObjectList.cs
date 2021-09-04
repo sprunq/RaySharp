@@ -33,34 +33,14 @@ namespace Raytracer.Hitables
             objects.Add(obj);
         }
 
-        public void AddObjModel(string path, Vector3d offset, Material material, double scale)
-        {
-            var objLoaderFactory = new ObjLoaderFactory();
-            var objLoader = objLoaderFactory.Create();
-            FileStream fileStream = File.OpenRead(path);
-            var result = objLoader.Load(fileStream);
-            var vertcies = result.Vertices;
-
-            foreach (var f in result.Groups[0].Faces)
-            {
-                var v0 = (f[0].VertexIndex - 1);
-                var v1 = (f[1].VertexIndex - 1);
-                var v2 = (f[2].VertexIndex - 1);
-
-                Add(new Triangle(new Vector3d(vertcies[v0].X * scale + offset.X, vertcies[v0].Y * scale + offset.Y, vertcies[v0].Z * scale + offset.Z),
-                                 new Vector3d(vertcies[v1].X * scale + offset.X, vertcies[v1].Y * scale + offset.Y, vertcies[v1].Z * scale + offset.Z),
-                                 new Vector3d(vertcies[v2].X * scale + offset.X, vertcies[v2].Y * scale + offset.Y, vertcies[v2].Z * scale + offset.Z),
-                                 material));
-            }
-        }
-
         public static List<Hitable> GetObjFaces(string objPath, string mtlPath, Material material, double scale)
         {
             var objFile = ObjFile.FromFile(objPath);
-            var mtlFile = ObjMaterialFile.FromFile(mtlPath);
-
-            var x = mtlFile.Materials.Count;
-            Console.WriteLine(x);
+            if (mtlPath != "")
+            {
+                var mtlFile = ObjMaterialFile.FromFile(mtlPath);
+                var x = mtlFile.Materials.Count;
+            }
             var vertcies = objFile.Vertices;
             List<Hitable> faces = new();
 
@@ -74,6 +54,8 @@ namespace Raytracer.Hitables
                 var p1 = vertcies[v1].Position;
                 var p2 = vertcies[v2].Position;
 
+                var normal = new Vector3d(f.Vertices[0].Normal, f.Vertices[1].Normal, f.Vertices[2].Normal);
+
                 if (f.Vertices.Count == 4)
                 {
                     // Face is quad
@@ -83,11 +65,13 @@ namespace Raytracer.Hitables
                     faces.Add(new Triangle(new Vector3d(p0.X * scale, p0.Y * scale, p0.Z * scale),
                                            new Vector3d(p1.X * scale, p1.Y * scale, p1.Z * scale),
                                            new Vector3d(p2.X * scale, p2.Y * scale, p2.Z * scale),
+                                           normal,
                                            material));
 
                     faces.Add(new Triangle(new Vector3d(p2.X * scale, p2.Y * scale, p2.Z * scale),
                                            new Vector3d(p3.X * scale, p3.Y * scale, p3.Z * scale),
                                            new Vector3d(p0.X * scale, p0.Y * scale, p0.Z * scale),
+                                           normal,
                                            material));
                 }
                 else
@@ -96,6 +80,7 @@ namespace Raytracer.Hitables
                     faces.Add(new Triangle(new Vector3d(p0.X * scale, p0.Y * scale, p0.Z * scale),
                                            new Vector3d(p1.X * scale, p1.Y * scale, p1.Z * scale),
                                            new Vector3d(p2.X * scale, p2.Y * scale, p2.Z * scale),
+                                           normal,
                                            material));
                 }
             }

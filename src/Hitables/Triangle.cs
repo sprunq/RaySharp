@@ -3,6 +3,7 @@ using System.Numerics;
 using OpenTK.Mathematics;
 using Raytracer.Core;
 using Raytracer.Materials;
+using Raytracer.Utility;
 
 namespace Raytracer.Hitables
 {
@@ -11,14 +12,16 @@ namespace Raytracer.Hitables
         private Material _material;
 
         public Vector3d v0, v1, v2;
+        private Vector3d _normal;
 
         public Triangle() { }
 
-        public Triangle(Vector3d x, Vector3d y, Vector3d z, Material material)
+        public Triangle(Vector3d x, Vector3d y, Vector3d z, Vector3d normal, Material material)
         {
             v0 = x;
             v1 = y;
             v2 = z;
+            _normal = Vector3d.Normalize(Vector3d.Cross(v1 - v0, v2 - v0));
             _material = material;
         }
 
@@ -34,7 +37,7 @@ namespace Raytracer.Hitables
             var v0v2 = v2 - v0;
 
             Vector3d pvec = Vector3d.Cross(ray.Direction, v0v2);
-            double det = Vector3d.Dot(v0v1, pvec);
+            double det = Vector3d.Dot(pvec, v0v1);
 
             double kEpsilon = Double.Epsilon;
 
@@ -66,21 +69,12 @@ namespace Raytracer.Hitables
                 return false;
             }
 
-            //rec.u = u;
-            //rec.v = v;
-            rec.t = t;
-            Vector3d outward_normal = Vector3d.Cross(v0v1, v0v2);
-            rec.SetFaceNormal(ray, outward_normal);
-            GetTriangleUV(outward_normal, ref rec.u, ref rec.v);
-            rec.material = _material;
             rec.position = ray.At(t);
+            rec.t = t;
+            rec.SetFaceNormal(ray, _normal);
+            rec.material = _material;
 
             return true;
-        }
-
-        public static void GetTriangleUV(Vector3d p, ref double u, ref double v)
-        {
-
         }
 
         public override bool BoundingBox(ref AABB output_box)

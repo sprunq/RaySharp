@@ -9,9 +9,9 @@ namespace Raytracer
     {
         static void Main(string[] args)
         {
-            Raytracer raytracer = new(imageWidth: 1800,
+            Raytracer raytracer = new(imageWidth: 1200,
                                       aspectRatio: 3.0 / 2.0,
-                                      samples: 15,
+                                      samples: 1,
                                       maxDepth: 50,
                                       shouldDenoise: true,
                                       denoiserPath: Path.GetFullPath(@"..\Denoiser\"),
