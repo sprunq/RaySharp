@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Desktop;
+using Raytracer.Scenes;
 
 namespace Raytracer
 {
@@ -8,15 +9,17 @@ namespace Raytracer
     {
         static void Main(string[] args)
         {
-            Raytracer raytracer = new(imageWidth: 1000,
+            Raytracer raytracer = new(imageWidth: 1800,
                                       aspectRatio: 3.0 / 2.0,
-                                      samples: 1,
+                                      samples: 15,
                                       maxDepth: 50,
                                       shouldDenoise: true,
                                       denoiserPath: Path.GetFullPath(@"..\Denoiser\"),
                                       outputName: "output.png",
                                       outputFolder: Path.GetFullPath(@"..\Renders"),
                                       printProgress: true);
+
+            raytracer.LoadScene(Scene.ModelScene);
 
             var nativeWindowSettings = new NativeWindowSettings()
             {

@@ -38,8 +38,9 @@ namespace Raytracer.Scenes
             world.Add(hground);
 
             // Box
+            var checkerTexture = new Lambertian(new CheckerTexture(Vector3d.Zero, Vector3d.One));
             var mBox = new Lambertian(new Vector3d(1, 1, 1));
-            var hBack = new YZRect(new Vector2d(-50, 50), new Vector2d(-50, 50), 5, mBox);
+            var hBack = new YZRect(new Vector2d(-50, 50), new Vector2d(-50, 50), 5, checkerTexture);
             var hLeft = new XYRect(new Vector2d(-40, 40), new Vector2d(-40, 40), 20, mBox);
             var hRight = new XYRect(new Vector2d(-40, 40), new Vector2d(-40, 40), -20, mBox);
             var hTop = new XZRect(new Vector2d(-30, 30), new Vector2d(-30, 30), 40, mBox);
@@ -82,7 +83,7 @@ namespace Raytracer.Scenes
 
 
             // Lights
-            var mLMain = new Light(new Vector3d(5));
+            var mLMain = new Light(new Vector3d(2));
             var hLMain = new Sphere(new Vector3d(-20, 40, 0), 6, mLMain);
             world.Add(hLMain);
 

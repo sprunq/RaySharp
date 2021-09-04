@@ -7,6 +7,7 @@ using Raytracer.Display;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Threading;
+using SixLabors.ImageSharp;
 
 namespace Raytracer
 {
@@ -29,7 +30,7 @@ namespace Raytracer
         private int _vertexBufferObject;
         private int _vertexArrayObject;
         private Shader _shader;
-        private Texture _texture;
+        private LiveTexture _texture;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings, Raytracer raytracer)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -43,8 +44,8 @@ namespace Raytracer
             base.OnLoad();
 
             // Raytracer
-            _raytracer.LoadScene(Scene.LightScene);
-            Task.Run(() => _raytracer.Render());
+            Task.Run(() => _raytracer.RenderSpiral());
+
 
             // Live Render
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -70,9 +71,9 @@ namespace Raytracer
             GL.EnableVertexAttribArray(texCoordLocation);
             GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
 
-            _texture = Texture.LoadFromVariable(_raytracer.RenderImage);
+            _texture = new();
+            _texture.UpdateImage(_raytracer.RenderImage);
             _texture.Use(TextureUnit.Texture0);
-
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -83,11 +84,12 @@ namespace Raytracer
             {
                 GL.Clear(ClearBufferMask.ColorBufferBit);
                 GL.BindVertexArray(_vertexArrayObject);
-                _texture = Texture.LoadFromVariable(_raytracer.RenderImage);
+                _texture.UpdateImage(_raytracer.RenderImage);
                 _texture.Use(TextureUnit.Texture0);
                 _shader.Use();
                 GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
                 SwapBuffers();
+                Title = $"Raytracer [{_raytracer.Progress.ToString("0.00%")}]";
 
                 Thread.Sleep(10);
             }
@@ -114,7 +116,7 @@ namespace Raytracer
             GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.BindVertexArray(_vertexArrayObject);
-            _texture = Texture.LoadFromVariable(_raytracer.RenderImage);
+            _texture.UpdateImage(_raytracer.RenderImage);
             _texture.Use(TextureUnit.Texture0);
             _shader.Use();
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
