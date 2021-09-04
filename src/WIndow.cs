@@ -15,6 +15,7 @@ namespace Raytracer
         private Raytracer _raytracer;
         private Vector2i _mdPos;
         private Vector2i _muPos;
+
         private readonly float[] _vertices =
         {
              1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
@@ -27,11 +28,12 @@ namespace Raytracer
             0, 1, 3,
             1, 2, 3
         };
+
         private int _elementBufferObject;
         private int _vertexBufferObject;
         private int _vertexArrayObject;
         private Shader _shader;
-        private LiveTexture _texture;
+        private LiveTexture _previewTexture;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings, Raytracer raytracer)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -74,9 +76,9 @@ namespace Raytracer
             GL.EnableVertexAttribArray(texCoordLocation);
             GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
 
-            _texture = new();
-            _texture.UpdateImage(_raytracer.RenderImage);
-            _texture.Use(TextureUnit.Texture0);
+            _previewTexture = new();
+            _previewTexture.UpdateImage(_raytracer.RenderImage);
+            _previewTexture.Use(TextureUnit.Texture0);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -87,8 +89,8 @@ namespace Raytracer
             {
                 GL.Clear(ClearBufferMask.ColorBufferBit);
                 GL.BindVertexArray(_vertexArrayObject);
-                _texture.UpdateImage(_raytracer.RenderImage);
-                _texture.Use(TextureUnit.Texture0);
+                _previewTexture.UpdateImage(_raytracer.RenderImage);
+                _previewTexture.Use(TextureUnit.Texture0);
                 _shader.Use();
                 GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
                 SwapBuffers();
@@ -152,8 +154,8 @@ namespace Raytracer
             GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.BindVertexArray(_vertexArrayObject);
-            _texture.UpdateImage(_raytracer.RenderImage);
-            _texture.Use(TextureUnit.Texture0);
+            _previewTexture.UpdateImage(_raytracer.RenderImage);
+            _previewTexture.Use(TextureUnit.Texture0);
             _shader.Use();
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
             SwapBuffers();

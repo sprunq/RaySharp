@@ -12,7 +12,7 @@ namespace Raytracer.Scenes
         public static void ModelScene(ref double _aspectRatio, ref Vector3d background, out ObjectList world, out Camera camera)
         {
             Vector3d lookfrom = new(-50, 12, 0);
-            Vector3d lookat = new(1, 11.5, 0);
+            Vector3d lookat = new(0, 11.5, 0);
             Vector3d vup = new(0, 1, 0);
             var focusDist = 10;
             var aperture = 0.0;
@@ -25,9 +25,9 @@ namespace Raytracer.Scenes
             background = new Vector3d(0);
 
             // Skybox
-            var tSkybox = new ImageTexture(@"..\Textures\HDRI Maps\hilly_terrain.jpg", 1, 0);
+            var tSkybox = new ImageTexture(@"..\Textures\HDRI Maps\sunflowers.jpg", 1, 0);
             var mSkybox = new Light(tSkybox);
-            var hSkybox = new Sphere(new Vector3d(0, -10, 0), 1000, mSkybox);
+            var hSkybox = new Sphere(new Vector3d(0, -100, 0), 1000, mSkybox);
             var roSkybox = new Rotate(hSkybox, 90, Axis.Y);
             world.Add(roSkybox);
 
@@ -108,10 +108,10 @@ namespace Raytracer.Scenes
 
             var mModelLambert = new Lambertian(new Vector3d(0.3, 0, 0.5));
             var mModelGlass = new Dielectric(1.5, new Vector3d(0.4, 0, 0.5));
-            var mModelMetal = new Metal(new Vector3d(0.2, 0, 0.4), 0.1);
+            var mModelMetal = new Metal(new Vector3d(1), 0.1);
             var hModel = new BVHNode(ObjectList.GetObjFaces(@"..\Models\lucy.obj",
                                                             "",
-                                                            mModelGlass,
+                                                            mModelMetal,
                                                             0.065));
             var roXModel = new Rotate(hModel, 0, Axis.X);
             var roYModel = new Rotate(roXModel, -90, Axis.Y);
