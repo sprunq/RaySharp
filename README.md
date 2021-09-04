@@ -4,7 +4,7 @@
 
 ### What is this?
 
-A C# raytracer, based on the book Ray Tracing in One Weekend by Peter Shirley, with additional live preview in OpenTK,Wavefront OBJ model loading and a denoiser.
+A C# raytracer, based on the book Ray Tracing in One Weekend by Peter Shirley, with additional live preview in OpenTK, Wavefront OBJ model loading and a denoiser.
 
 ### Why C#?
 
