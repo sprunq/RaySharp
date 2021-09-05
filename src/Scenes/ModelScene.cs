@@ -109,10 +109,8 @@ namespace Raytracer.Scenes
             var mModelLambert = new Lambertian(new Vector3d(0.3, 0, 0.5));
             var mModelGlass = new Dielectric(1.5, new Vector3d(0.4, 0, 0.5));
             var mModelMetal = new Metal(new Vector3d(1), 0.1);
-            var hModel = new BVHNode(ObjectList.GetObjFaces(@"..\Models\lucy.obj",
-                                                            "",
-                                                            mModelMetal,
-                                                            0.065));
+
+            var hModel = new Mesh(@"..\Models\lucy.obj", "", mModelLambert, 0.065);
             var roXModel = new Rotate(hModel, 0, Axis.X);
             var roYModel = new Rotate(roXModel, -90, Axis.Y);
             var trModel = new Translate(roYModel, new Vector3d(0, 5 + modelHeightOffset, 0));
