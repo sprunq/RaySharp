@@ -1,6 +1,6 @@
 # RaySharp
 
-![Lucy Statue](https://raw.githubusercontent.com/sprunq/RaySharp/main/Pictures/lucy.png?token=AMNAZ7ZMV5VFYJHL7MXA6ITBHU27M "Lucy")
+![Lucy Statue](Pictures/lucy.png)
 
 ### What is this?
 
@@ -17,11 +17,12 @@ This Denoiser only works well in some cases and makes the image pretty blurry.
 
 |                                                            Without Denoiser                                                            |                                                            With Denoiser                                                            |
 | :------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------: |
-| ![](https://raw.githubusercontent.com/sprunq/RaySharp/main/Pictures/Denoise%20Example/without.png?token=AMNAZ74LFJGSBO37KQVK5NTBHU3HE) | ![](https://raw.githubusercontent.com/sprunq/RaySharp/main/Pictures/Denoise%20Example/with.png?token=AMNAZ7YRTQNT5WNROFWNLL3BHU3H2) |
+| ![](Pictures/Denoise%20Example/without.png) | ![](Pictures/Denoise%20Example/with.png) |
 
 ### Rendering
+Rendering can be done either in random order or in spiral chunks.
 
-<div style="text-align:center"><img src="https://raw.githubusercontent.com/sprunq/RaySharp/main/Pictures/Rendering/spiral%20rendering.gif?token=AMNAZ76CDS2CWTCRCAETLILBHU6B2" width="400"/></div>
+<img src="Pictures/Rendering/spiral%20rendering.gif" width="480"/>
 
 ### Sources
 
