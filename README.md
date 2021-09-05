@@ -1,6 +1,6 @@
 # RaySharp
 
-![Lucy Statue](Pictures/lucy.png)
+![Lucy Statue](Pictures/chrome_lucy.png)
 
 ### What is this?
 
@@ -17,7 +17,7 @@ This Denoiser only works well in some cases and makes the image pretty blurry.
 
 |                                                            Without Denoiser                                                            |                                                            With Denoiser                                                            |
 | :------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------: |
-| ![](Pictures/Denoise%20Example/without.png) | ![](Pictures/Denoise%20Example/with.png) |
+| ![](Pictures/Denoise_Example/without.png) | ![](Pictures/Denoise_Example/with.png) |
 
 ### Rendering
 Rendering can be done either in random order or in spiral chunks.
