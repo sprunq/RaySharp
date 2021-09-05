@@ -98,12 +98,17 @@ namespace Raytracer
                 return Task.CompletedTask;
             }
 
+            Progress = 0;
             Stopwatch stopWatch = new();
             stopWatch.Start();
             FinishedRendering = false;
 
+            float heightRange = to.X - from.X;
+            int renderProgress = 0;
             Parallel.For(from.X, to.X, (j) =>
                 {
+                    renderProgress++;
+                    Progress = renderProgress / heightRange;
                     int derivedIndex = ImageHeight - j;
                     Parallel.For(from.Y, to.Y, (i) =>
                     {
@@ -216,6 +221,8 @@ namespace Raytracer
                 Console.WriteLine("An Instance is currently rendering. Please wait for it to finish.");
                 return Task.CompletedTask;
             }
+
+            Progress = 0;
 
             Stopwatch stopWatch = new();
             stopWatch.Start();
