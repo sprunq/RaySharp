@@ -25,7 +25,7 @@ namespace Raytracer.Scenes
             background = new Vector3d(0);
 
             // Skybox
-            var tSkybox = new ImageTexture(@"..\Textures\HDRI Maps\sunflowers.jpg", 1, 0);
+            var tSkybox = new ImageTexture(@"..\Textures\HDRI Maps\sunflowers.jpg", 1, 0, 1);
             var mSkybox = new Light(tSkybox);
             var hSkybox = new Sphere(new Vector3d(0, -10, 0), 100, mSkybox);
             world.Add(hSkybox);

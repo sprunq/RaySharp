@@ -23,13 +23,13 @@ namespace Raytracer.Scenes
             world = new();
 
             // Skybox
-            var tSkybox = new ImageTexture(@"..\Textures\HDRI Maps\hilly_terrain.jpg", 1, 0);
+            var tSkybox = new ImageTexture(@"..\Textures\HDRI Maps\hilly_terrain.jpg", 1, 0, 1);
             var mSkybox = new Light(tSkybox);
             var hSkybox = new Sphere(new Vector3d(0, 0, 0), 10000, mSkybox);
             world.Add(hSkybox);
 
             // Ground
-            var tWood = new ImageTexture(@"..\Textures\wood_planks.jpg", 1000, 0);
+            var tWood = new ImageTexture(@"..\Textures\wood_planks.jpg", 1000, 0, 1);
             var mWood = new Lambertian(tWood);
             var hground = new XZRect(new Vector2d(-1000, 1000), new Vector2d(-1000, 1000), 0, mWood);
             world.Add(hground);
@@ -48,7 +48,7 @@ namespace Raytracer.Scenes
             world.Add(hLight1);
 
             // Spheres
-            var tEarth = new ImageTexture(@"..\Textures\earthmap8k.jpg", 1, 4000);
+            var tEarth = new ImageTexture(@"..\Textures\earthmap8k.jpg", 1, 4000, 1);
             var mEarth = new Lambertian(tEarth);
             var hEarth = new Sphere(new Vector3d(0, 2, 0), 2, mEarth);
             world.Add(hEarth);
