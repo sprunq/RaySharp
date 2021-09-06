@@ -1,6 +1,6 @@
 # RaySharp
 
-![Lucy Statue](Pictures/chrome_lucy.png)
+![Dragon at night](Pictures/dragon_800_samples.png)
 
 ### What is this?
 
