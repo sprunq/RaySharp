@@ -4,7 +4,7 @@ using OpenTK.Mathematics;
 
 namespace Raytracer.Utility
 {
-    public static class Extensions
+    public static class Vector3Extension
     {
         public static double Get(this Vector3d v, int index)
         {
@@ -21,6 +21,7 @@ namespace Raytracer.Utility
             }
         }
     }
+
     class Vector3Helper
     {
         public static Vector3d RandomVec3()

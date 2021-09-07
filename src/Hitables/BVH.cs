@@ -93,6 +93,12 @@ namespace Raytracer.Hitables
 
         private static int BoxXCompare(Hitable a, Hitable b)
         {
+            if (a == null || b == null)
+            {
+                Console.WriteLine("Null in x");
+                return 1;
+            }
+
             AABB boxLeft = new(), boxRight = new();
             if (!a.BoundingBox(ref boxLeft) || !b.BoundingBox(ref boxRight))
             {
@@ -109,6 +115,11 @@ namespace Raytracer.Hitables
 
         private static int BoxYCompare(Hitable a, Hitable b)
         {
+            if (a == null || b == null)
+            {
+                Console.WriteLine("Null in y");
+                return 1;
+            }
             AABB boxLeft = new(), boxRight = new();
             if (!a.BoundingBox(ref boxLeft) || !b.BoundingBox(ref boxRight))
             {
@@ -125,6 +136,11 @@ namespace Raytracer.Hitables
 
         private static int BoxZCompare(Hitable a, Hitable b)
         {
+            if (a == null || b == null)
+            {
+                Console.WriteLine("Null in z");
+                return 1;
+            }
             AABB boxLeft = new(), boxRight = new();
             if (!a.BoundingBox(ref boxLeft) || !b.BoundingBox(ref boxRight))
             {

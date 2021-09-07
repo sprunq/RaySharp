@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using OpenTK.Mathematics;
 using Raytracer.Hitables;
 using Raytracer.Utility;
@@ -9,12 +10,14 @@ namespace Raytracer.Core
     {
         public Vector3d Origin;
         public Vector3d Direction;
+        public static ulong counter = 0;
 
         public Ray() { }
         public Ray(Vector3d origin, Vector3d direction)
         {
             Origin = origin;
             Direction = direction;
+            Interlocked.Increment(ref counter);
         }
 
         public Vector3d At(double t)
@@ -63,6 +66,15 @@ namespace Raytracer.Core
             int ib = (int)(256 * GeneralHelper.Clamp(b, 0.0, 0.999));
 
             return new Vector3d(ir, ig, ib);
+        }
+        public static ulong GetTotalRays()
+        {
+            return counter;
+        }
+
+        public static void ResetRayCount()
+        {
+            counter = 0;
         }
     }
 }

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using OpenTK.Mathematics;
+using Raytracer.Core;
+using Raytracer.Utility;
 
 namespace Raytracer
 {
@@ -15,25 +17,19 @@ namespace Raytracer
         private Raytracer _raytracer;
         private Vector2i _mdPos;
         private Vector2i _muPos;
-
-        private readonly float[] _textureVertices =
-        {
-             1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-             1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-            -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-            -1.0f,  1.0f, 0.0f, 0.0f, 1.0f
-        };
+        private Vector2 _textureOffset;
+        private Shader _shader;
+        private LiveTexture _previewTexture;
+        private int _elementBufferObject;
+        private int _vertexBufferObject;
+        private int _vertexArrayObject;
+        private float _zoom;
+        private float[] _textureVertices;
         private readonly uint[] _textureIndices =
         {
             0, 1, 3,
             1, 2, 3
         };
-
-        private int _elementBufferObject;
-        private int _vertexBufferObject;
-        private int _vertexArrayObject;
-        private Shader _shader;
-        private LiveTexture _previewTexture;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings, Raytracer raytracer)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -41,14 +37,15 @@ namespace Raytracer
             _raytracer = raytracer;
             _mdPos = new();
             _muPos = new();
+            _textureOffset = new(0);
+            _zoom = 1;
+            _textureVertices = GetLiveTextureVertecies();
         }
-
 
         protected override void OnLoad()
         {
             base.OnLoad();
 
-            // Live Render
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
             _vertexArrayObject = GL.GenVertexArray();
@@ -75,19 +72,19 @@ namespace Raytracer
             _previewTexture = new();
             _previewTexture.UpdateImage(_raytracer.RenderImage);
             _previewTexture.Use(TextureUnit.Texture0);
+
+            PrintHelpMessage();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            base.OnRenderFrame(e);
-
             if (!_raytracer.FinishedRendering)
             {
                 UpdateLiveTexture();
-                Title = $"Raytracer [{_raytracer.Progress.ToString("0.00%")}]";
-
-                Thread.Sleep(10);
+                ulong totalRays = Ray.GetTotalRays();
+                Title = $"Raytracer [{_raytracer.Progress.ToString("0.00%")}] Rays: {((decimal)totalRays).DynamicPrefix()}";
             }
+            Thread.Sleep(10);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -99,9 +96,34 @@ namespace Raytracer
             {
                 Close();
             }
-            else if (input.IsKeyDown(Keys.S))
+            else if (input.IsKeyDown(Keys.H) || input.IsKeyDown(Keys.F1))
+            {
+                PrintHelpMessage();
+                Thread.Sleep(100);
+            }
+            else if (input.IsKeyDown(Keys.Enter))
             {
                 _raytracer.SaveImage();
+            }
+            else if (input.IsKeyDown(Keys.W))
+            {
+                _textureOffset.Y -= 0.05f;
+                UpdateLiveTexture();
+            }
+            else if (input.IsKeyDown(Keys.A))
+            {
+                _textureOffset.X += 0.05f;
+                UpdateLiveTexture();
+            }
+            else if (input.IsKeyDown(Keys.S))
+            {
+                _textureOffset.Y += 0.05f;
+                UpdateLiveTexture();
+            }
+            else if (input.IsKeyDown(Keys.D))
+            {
+                _textureOffset.X -= 0.05f;
+                UpdateLiveTexture();
             }
             else if (input.IsKeyDown(Keys.R))
             {
@@ -110,6 +132,7 @@ namespace Raytracer
             }
             else if (input.IsKeyDown(Keys.C))
             {
+                Ray.ResetRayCount();
                 _raytracer.RenderImage = new(_raytracer.ImageWidth, _raytracer.ImageHeight);
                 UpdateLiveTexture();
                 Thread.Sleep(100);
@@ -150,8 +173,51 @@ namespace Raytracer
             UpdateLiveTexture();
         }
 
-        public void UpdateLiveTexture()
+        protected override void OnMouseDown(MouseButtonEventArgs e)
         {
+            if (e.Button == MouseButton.Left)
+            {
+                _mdPos.X = (int)(MousePosition.X);
+                _mdPos.Y = (int)(MousePosition.Y);
+            }
+            base.OnMouseDown(e);
+        }
+
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            if (e.Button == MouseButton.Left)
+            {
+                _muPos.X = (int)(MousePosition.X);
+                _muPos.Y = (int)(MousePosition.Y);
+
+                int fromY = Math.Min(_mdPos.X, _muPos.X);
+                int toY = Math.Max(_mdPos.X, _muPos.X);
+                int toX = _raytracer.ImageHeight - Math.Min(_mdPos.Y, _muPos.Y);
+                int fromX = _raytracer.ImageHeight - Math.Max(_mdPos.Y, _muPos.Y);
+
+                Task.Run(() => _raytracer.Render(new Vector2i(fromX, fromY), new Vector2i(toX, toY)));
+            }
+
+            base.OnMouseUp(e);
+        }
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
+            if (e.OffsetY > 0)
+                _zoom += 0.05f;
+            else if (e.OffsetY < 0 && _zoom > 0.1)
+                _zoom -= 0.05f;
+
+            UpdateLiveTexture();
+        }
+
+        private void UpdateLiveTexture()
+        {
+            _textureVertices = GetLiveTextureVertecies();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, _textureVertices.Length * sizeof(float), _textureVertices, BufferUsageHint.StaticDraw);
             GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.BindVertexArray(_vertexArrayObject);
@@ -162,32 +228,37 @@ namespace Raytracer
             SwapBuffers();
         }
 
-        protected override void OnMouseDown(MouseButtonEventArgs e)
+        private float[] GetLiveTextureVertecies()
         {
-            if (e.Button == MouseButton.Left)
+            float[] verts =
             {
-                _mdPos.X = (int)MousePosition.X;
-                _mdPos.Y = (int)MousePosition.Y;
-            }
-
-            base.OnMouseDown(e);
+                 1.0f*_zoom+_textureOffset.X,  1.0f*_zoom+_textureOffset.Y, 0.0f, 1.0f, 1.0f,
+                 1.0f*_zoom+_textureOffset.X, -1.0f*_zoom+_textureOffset.Y, 0.0f, 1.0f, 0.0f,
+                -1.0f*_zoom+_textureOffset.X, -1.0f*_zoom+_textureOffset.Y, 0.0f, 0.0f, 0.0f,
+                -1.0f*_zoom+_textureOffset.X,  1.0f*_zoom+_textureOffset.Y, 0.0f, 0.0f, 1.0f
+            };
+            return verts;
         }
 
-        protected override void OnMouseUp(MouseButtonEventArgs e)
+        private void PrintHelpMessage()
         {
-            if (e.Button == MouseButton.Left)
-            {
-                _muPos.X = (int)MousePosition.X;
-                _muPos.Y = (int)MousePosition.Y;
-
-                int fromY = Math.Min(_mdPos.X, _muPos.X);
-                int toY = Math.Max(_mdPos.X, _muPos.X);
-                int toX = _raytracer.ImageHeight - Math.Min(_mdPos.Y, _muPos.Y);
-                int fromX = _raytracer.ImageHeight - Math.Max(_mdPos.Y, _muPos.Y);
-
-                Task.Run(() => _raytracer.Render(new Vector2i(fromX, fromY), new Vector2i(toX, toY)));
-            }
-            base.OnMouseUp(e);
+            string helpMessage = "";
+            helpMessage += "\n-----------------------------------";
+            helpMessage += "\nRaySharp Controls";
+            helpMessage += "\n// Movement";
+            helpMessage += "\n- WASD: Movement";
+            helpMessage += "\n- Mousewheel: Zoom";
+            helpMessage += "\n// Rendering";
+            helpMessage += "\n- Arrow Keys: In-/Decrease Samples";
+            helpMessage += "\n- R: Render Image";
+            helpMessage += "\n- Enter: Save Image";
+            helpMessage += "\n// Misc";
+            helpMessage += "\n- Mouse Drag: Render Area";
+            helpMessage += "\n- C: Clear Image";
+            helpMessage += "\n- Esc: Exit";
+            helpMessage += "\n-----------------------------------";
+            helpMessage += "\n";
+            Console.WriteLine(helpMessage);
         }
     }
 }

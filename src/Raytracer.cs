@@ -17,9 +17,9 @@ namespace Raytracer
     {
         public Camera Camera;
         public ObjectList World;
+        public Image<Rgba32> RenderImage;
         public int ImageWidth;
         public int ImageHeight;
-        public Image<Rgba32> RenderImage;
         public bool FinishedRendering;
         public float Progress;
         public int Samples;
@@ -99,6 +99,7 @@ namespace Raytracer
             }
 
             Progress = 0;
+            Ray.ResetRayCount();
             Stopwatch stopWatch = new();
             stopWatch.Start();
             FinishedRendering = false;
@@ -157,7 +158,7 @@ namespace Raytracer
         {
             // Split Image into chunks
             List<Chunk> chunks = new();
-            int chunkSize = 10;
+            int chunkSize = 20;
             int numChunksX = ImageHeight / chunkSize;
             int numChunksY = ImageWidth / chunkSize;
             int leftOverX = ImageHeight % chunkSize;
@@ -223,7 +224,7 @@ namespace Raytracer
             }
 
             Progress = 0;
-
+            Ray.ResetRayCount();
             Stopwatch stopWatch = new();
             stopWatch.Start();
             FinishedRendering = false;

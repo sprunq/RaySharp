@@ -41,7 +41,7 @@ namespace Raytracer.Scenes
 
             // Models
             // Dragon
-            if (true)
+            if (false)
             {
                 var matDragonL = new Lambertian(new Vector3d(0.6, 0, 0.8));
                 var matDragonM = new Metal(new Vector3d(0.7, 0, 1), 0.1);
