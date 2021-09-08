@@ -6,7 +6,7 @@ using Raytracer.Core;
 
 namespace Raytracer.Hitables
 {
-    public class Lambertian : Material
+    public class Lambertian : IMaterial
     {
         public Lambertian(Vector3d albedo)
         {
@@ -18,7 +18,7 @@ namespace Raytracer.Hitables
             _albedo = albedo;
         }
 
-        public override bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3d attenuation, out Ray scattered)
+        public bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3d attenuation, out Ray scattered)
         {
             var scatterDirection = rec.normal + Vector3Helper.RandomUnitVector();
 

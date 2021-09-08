@@ -5,7 +5,7 @@ using Raytracer.Utility;
 
 namespace Raytracer.Hitables
 {
-    public class Metal : Material
+    public class Metal : IMaterial
     {
         public Metal(Vector3d albedo, double fuzziness)
         {
@@ -13,9 +13,9 @@ namespace Raytracer.Hitables
             _fuzziness = fuzziness < 1 ? fuzziness : 1;
         }
 
-        public override bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3d attenuation, out Ray scattered)
+        bool IMaterial.Scatter(Ray rayIn, ref HitRecord rec, out Vector3d attenuation, out Ray scattered)
         {
-            var reflected = reflect(Vector3d.Normalize(rayIn.Direction), rec.normal);
+            var reflected = Ray.reflect(Vector3d.Normalize(rayIn.Direction), rec.normal);
             scattered = new Ray(rec.position, reflected + _fuzziness * Vector3Helper.RandomInUnitSphere());
             attenuation = _albedo;
             return (Vector3d.Dot(scattered.Direction, rec.normal) > 0);

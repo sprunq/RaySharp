@@ -5,18 +5,18 @@ using Raytracer.Materials;
 
 namespace Raytracer.Hitables
 {
-    public class Sphere : Hitable
+    public class Sphere : IHitable
     {
         public Sphere() { }
 
-        public Sphere(Vector3d center, double radius, Material material)
+        public Sphere(Vector3d center, double radius, IMaterial material)
         {
             _center = center;
             _radius = radius;
             _material = material;
         }
 
-        public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
+        public bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
             Vector3d originCenter = ray.Origin - _center;
             var a = ray.Direction.LengthSquared;
@@ -62,7 +62,7 @@ namespace Raytracer.Hitables
             v = theta / Math.PI;
         }
 
-        public override bool BoundingBox(ref AABB outputBox)
+        public bool BoundingBox(ref AABB outputBox)
         {
             outputBox = new AABB(_center - new Vector3d(_radius, _radius, _radius),
                                  _center + new Vector3d(_radius, _radius, _radius));
@@ -71,6 +71,6 @@ namespace Raytracer.Hitables
 
         private Vector3d _center;
         private double _radius;
-        private Material _material;
+        private IMaterial _material;
     }
 }

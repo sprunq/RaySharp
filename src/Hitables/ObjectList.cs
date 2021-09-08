@@ -4,12 +4,12 @@ using Raytracer.Core;
 
 namespace Raytracer.Hitables
 {
-    public class ObjectList : Hitable
+    public class ObjectList : IHitable
     {
-        public List<Hitable> objects = new();
+        public List<IHitable> objects = new();
 
         public ObjectList() { }
-        public ObjectList(Hitable obj)
+        public ObjectList(IHitable obj)
         {
             Add(obj);
         }
@@ -19,12 +19,12 @@ namespace Raytracer.Hitables
             objects.Clear();
         }
 
-        public void Add(Hitable obj)
+        public void Add(IHitable obj)
         {
             objects.Add(obj);
         }
 
-        public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
+        public bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
             HitRecord tempRec = new();
             bool hasHitAnything = false;
@@ -43,7 +43,7 @@ namespace Raytracer.Hitables
             return hasHitAnything;
         }
 
-        public override bool BoundingBox(ref AABB outputBox)
+        public bool BoundingBox(ref AABB outputBox)
         {
             if (!objects.Any())
             {

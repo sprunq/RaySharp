@@ -10,11 +10,11 @@ using Raytracer.Utility;
 
 namespace Raytracer.Hitables
 {
-    public class Mesh : Hitable
+    public class Mesh : IHitable
     {
         public Mesh() { }
 
-        public Mesh(string objPath, Material material, double scale)
+        public Mesh(string objPath, IMaterial material, double scale)
         {
             var buildTime = new Stopwatch();
             buildTime.Start();
@@ -26,13 +26,13 @@ namespace Raytracer.Hitables
             Console.WriteLine($"Built Model {objPath} | {((decimal)NumberOfFaces).DynamicPostFix()} | {buildTime.Elapsed.Seconds}s");
         }
 
-        public override bool BoundingBox(ref AABB outputBox)
+        public bool BoundingBox(ref AABB outputBox)
         {
             outputBox = _faces.Box;
             return true;
         }
 
-        public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
+        public bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
             return _faces.Hit(ray, tMin, tMax, ref rec);
         }
@@ -42,7 +42,7 @@ namespace Raytracer.Hitables
             var objFile = ObjFile.FromFile(_objPath);
             var vertcies = objFile.Vertices;
             NumberOfFaces = objFile.Faces.Count();
-            List<Hitable> faces = new();
+            List<IHitable> faces = new();
 
             foreach (var face in objFile.Faces)
             {
@@ -84,7 +84,7 @@ namespace Raytracer.Hitables
         public int NumberOfFaces;
         private BVHNode _faces;
         private string _objPath;
-        private Material _material;
+        private IMaterial _material;
         private double _scale;
     }
 }

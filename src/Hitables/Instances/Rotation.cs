@@ -1,10 +1,9 @@
 using System;
 using OpenTK.Mathematics;
 using Raytracer.Core;
-using Raytracer.Hitables;
 using Raytracer.Utility;
 
-namespace Raytracer.Instances
+namespace Raytracer.Hitables.Instances
 {
     public enum Axis
     {
@@ -13,11 +12,11 @@ namespace Raytracer.Instances
         Z
     };
 
-    public class Rotate : Hitable
+    public class Rotate : IHitable
     {
         public Rotate() { }
 
-        public Rotate(Hitable hitable, double angle, Axis axis)
+        public Rotate(IHitable hitable, double angle, Axis axis)
         {
             _material = hitable;
             var radians = GeneralHelper.ConvertToRadians(angle);
@@ -76,7 +75,7 @@ namespace Raytracer.Instances
             _boundingBox = new AABB(min, max);
         }
 
-        public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
+        public bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
             var origin = ray.Origin;
             var direction = ray.Direction;
@@ -149,13 +148,13 @@ namespace Raytracer.Instances
             return true;
         }
 
-        public override bool BoundingBox(ref AABB outputBox)
+        public bool BoundingBox(ref AABB outputBox)
         {
             outputBox = _boundingBox;
             return _hasBox;
         }
 
-        private Hitable _material;
+        private IHitable _material;
         private double _sinTheta;
         private double _cosTheta;
         private bool _hasBox;

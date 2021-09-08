@@ -1,13 +1,13 @@
 using Raytracer.Hitables;
 using Raytracer.Materials;
-using Raytracer.Instances;
+using Raytracer.Hitables.Instances;
 using OpenTK.Mathematics;
 
 namespace Raytracer.Scenes
 {
     public partial class Scene
     {
-        public static void BoxSpherePillar(double boxWidth, double boxHeight, double sphereSize, double angle, Vector3d offset, Material mBox, Material mSphere, ref ObjectList world)
+        public static void BoxSpherePillar(double boxWidth, double boxHeight, double sphereSize, double angle, Vector3d offset, IMaterial mBox, IMaterial mSphere, ref ObjectList world)
         {
             var hBox = new Box(new Vector3d(-boxWidth / 2.0, 0, -boxWidth / 2.0), new Vector3d(boxWidth / 2.0, boxHeight, boxWidth / 2.0), mBox);
             var roBox = new Rotate(hBox, angle, Axis.Y);

@@ -25,7 +25,7 @@ namespace Raytracer.Core
             return Origin + Vector3d.Multiply(Direction, t);
         }
 
-        public static Vector3d RayColor(Ray ray, Vector3d background, Hitable world, int depth)
+        public static Vector3d RayColor(Ray ray, Vector3d background, IHitable world, int depth)
         {
             HitRecord rec = new();
 
@@ -67,6 +67,20 @@ namespace Raytracer.Core
 
             return new Vector3d(ir, ig, ib);
         }
+
+        public static Vector3d refract(Vector3d uv, Vector3d n, double refractionRatio)
+        {
+            var cosTheta = Math.Min(Vector3d.Dot(-uv, n), 1.0);
+            Vector3d rayOutPerpendicular = refractionRatio * (uv + cosTheta * n);
+            Vector3d rayOutParallel = -Math.Sqrt(Math.Abs(1.0f - rayOutPerpendicular.LengthSquared)) * n;
+            return rayOutPerpendicular + rayOutParallel;
+        }
+
+        public static Vector3d reflect(Vector3d v, Vector3d n)
+        {
+            return v - 2 * Vector3d.Dot(v, n) * n;
+        }
+
         public static ulong GetTotalRays()
         {
             return counter;

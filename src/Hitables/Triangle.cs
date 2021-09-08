@@ -5,11 +5,11 @@ using Raytracer.Materials;
 
 namespace Raytracer.Hitables
 {
-    public class Triangle : Hitable
+    public class Triangle : IHitable
     {
         public Triangle() { }
 
-        public Triangle(Vector3d x, Vector3d y, Vector3d z, Vector3d normal, Material material)
+        public Triangle(Vector3d x, Vector3d y, Vector3d z, Vector3d normal, IMaterial material)
         {
             v0 = x;
             v1 = y;
@@ -18,7 +18,7 @@ namespace Raytracer.Hitables
             _material = material;
         }
 
-        public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
+        public bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
             var v0v1 = v1 - v0;
             var v0v2 = v2 - v0;
@@ -64,7 +64,7 @@ namespace Raytracer.Hitables
             return true;
         }
 
-        public override bool BoundingBox(ref AABB output_box)
+        public bool BoundingBox(ref AABB output_box)
         {
             Vector3d min = new(Math.Min(v0.X, Math.Min(v1.X, v2.X)),
                                Math.Min(v0.Y, Math.Min(v1.Y, v2.Y)),
@@ -79,7 +79,7 @@ namespace Raytracer.Hitables
             return true;
         }
 
-        private Material _material;
+        private IMaterial _material;
         private Vector3d v0, v1, v2;
         private Vector3d _normal;
     }

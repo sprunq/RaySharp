@@ -3,7 +3,7 @@ using Raytracer.Hitables;
 using Raytracer.Textures;
 using Raytracer.Utility;
 using Raytracer.Materials;
-using Raytracer.Instances;
+using Raytracer.Hitables.Instances;
 using System.Collections.Generic;
 using OpenTK.Mathematics;
 
@@ -61,7 +61,7 @@ namespace Raytracer.Scenes
 
 
             // Spheres
-            var spheres = new List<Hitable>();
+            var spheres = new List<IHitable>();
             int sphereMax = 3;
             for (int a = -200; a < 200; a += sphereMax * 2)
             {
@@ -72,7 +72,7 @@ namespace Raytracer.Scenes
                         var materialType = RandomHelper.RandomDouble();
                         var sphereSize = RandomHelper.RandomDouble() * sphereMax;
                         Vector3d center = new(a + 0.9 * RandomHelper.RandomDouble(), sphereSize, b + 0.9 * RandomHelper.RandomDouble());
-                        Material material;
+                        IMaterial material;
 
                         if (Vector3d.Distance(new Vector3d(-95, 0, 100), center) > 22)
                         {

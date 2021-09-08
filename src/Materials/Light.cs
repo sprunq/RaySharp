@@ -5,7 +5,7 @@ using Raytracer.Textures;
 
 namespace Raytracer.Hitables
 {
-    public class Light : Material
+    public class Light : IMaterial
     {
         public Light(Texture emit)
         {
@@ -17,7 +17,7 @@ namespace Raytracer.Hitables
             _emit = new SolidColor(color);
         }
 
-        public override bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3d attenuation, out Ray scattered)
+        public bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3d attenuation, out Ray scattered)
         {
             rec.material = null;
             rec.normal = new Vector3d();
@@ -26,7 +26,7 @@ namespace Raytracer.Hitables
             return false;
         }
 
-        public override Vector3d Emitted(double u, double v, Vector3d p)
+        public Vector3d Emitted(double u, double v, Vector3d p)
         {
             return _emit.Value(u, v, p);
         }

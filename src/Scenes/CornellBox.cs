@@ -1,6 +1,6 @@
 using Raytracer.Core;
 using Raytracer.Hitables;
-using Raytracer.Instances;
+using Raytracer.Hitables.Instances;
 using OpenTK.Mathematics;
 
 namespace Raytracer.Scenes
@@ -33,11 +33,11 @@ namespace Raytracer.Scenes
             world.Add(new XZRect(new Vector2d(0, 555), new Vector2d(0, 555), 0, white));
             world.Add(new XYRect(new Vector2d(0, 555), new Vector2d(0, 555), 555, white));
 
-            Hitable box1 = new Box(new Vector3d(0, 0, 0), new Vector3d(165, 330, 165), white);
+            IHitable box1 = new Box(new Vector3d(0, 0, 0), new Vector3d(165, 330, 165), white);
             box1 = new Rotate(box1, 15, Axis.Y);
             box1 = new Translate(box1, new Vector3d(265, 0, 295));
 
-            Hitable box2 = new Box(new Vector3d(0, 0, 0), new Vector3d(165, 165, 165), white);
+            IHitable box2 = new Box(new Vector3d(0, 0, 0), new Vector3d(165, 165, 165), white);
             box2 = new Rotate(box2, -18, Axis.Y);
             box2 = new Translate(box2, new Vector3d(130, 0, 65));
 

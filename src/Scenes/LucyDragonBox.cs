@@ -1,10 +1,8 @@
 using Raytracer.Core;
 using Raytracer.Hitables;
-using Raytracer.Instances;
+using Raytracer.Hitables.Instances;
 using OpenTK.Mathematics;
-using Raytracer.Utility;
 using System.Collections.Generic;
-using System;
 
 namespace Raytracer.Scenes
 {
@@ -32,7 +30,7 @@ namespace Raytracer.Scenes
             world.Add(new XZRect(new Vector2d(0, 555), new Vector2d(0, 555), 0, white));
 
             // Back Lights
-            List<Hitable> lights = new();
+            List<IHitable> lights = new();
             int width = 20;
             int spacing = 60;
             for (int i = 0; i < 555; i += spacing)
@@ -49,19 +47,19 @@ namespace Raytracer.Scenes
 
             // Light Sphere
             var light = new Light(new Vector3d(2));
-            Hitable lightSphere = new Sphere(new Vector3d(260, 30, 140), 30, light);
+            IHitable lightSphere = new Sphere(new Vector3d(260, 30, 140), 30, light);
             world.Add(lightSphere);
 
             // Lucy
             var lucyMaterial = new Dielectric(1.5);
-            Hitable lucy = new Mesh(@"..\Models\lucy.obj", lucyMaterial, 1.3);
+            IHitable lucy = new Mesh(@"..\Models\lucy.obj", lucyMaterial, 1.3);
             lucy = new Rotate(lucy, 90, Axis.Y);
             lucy = new Translate(lucy, new Vector3d(150, 0, 150));
             world.Add(lucy);
 
             // Dragon
             var dragonMaterial = new Metal(new Vector3d(1), 0.1);
-            Hitable dragon = new Mesh(@"..\Models\xyzrgb_dragon.obj", dragonMaterial, 2.5);
+            IHitable dragon = new Mesh(@"..\Models\xyzrgb_dragon.obj", dragonMaterial, 2.5);
             dragon = new Rotate(dragon, 65, Axis.Y);
             dragon = new Translate(dragon, new Vector3d(300, 90, 200));
             world.Add(dragon);

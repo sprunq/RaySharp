@@ -8,9 +8,9 @@ using Raytracer.Utility;
 
 namespace Raytracer.Hitables
 {
-    public class BVHNode : Hitable
+    public class BVHNode : IHitable
     {
-        public BVHNode(List<Hitable> hitables)
+        public BVHNode(List<IHitable> hitables)
         {
             var axis = (int)(RandomHelper.RandomInt(0, 3));
             switch (axis)
@@ -50,7 +50,7 @@ namespace Raytracer.Hitables
             Box = AABB.SurroundingBox(boxRight, boxLeft);
         }
 
-        public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
+        public bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
             if (Box.Hit(ray, tMin, tMax))
             {
@@ -81,13 +81,13 @@ namespace Raytracer.Hitables
             return false;
         }
 
-        public override bool BoundingBox(ref AABB box)
+        public bool BoundingBox(ref AABB box)
         {
             box = Box;
             return true;
         }
 
-        private static int BoxXCompare(Hitable a, Hitable b)
+        private static int BoxXCompare(IHitable a, IHitable b)
         {
             if (a == null || b == null)
             {
@@ -109,7 +109,7 @@ namespace Raytracer.Hitables
             return 1;
         }
 
-        private static int BoxYCompare(Hitable a, Hitable b)
+        private static int BoxYCompare(IHitable a, IHitable b)
         {
             if (a == null || b == null)
             {
@@ -130,7 +130,7 @@ namespace Raytracer.Hitables
             return 1;
         }
 
-        private static int BoxZCompare(Hitable a, Hitable b)
+        private static int BoxZCompare(IHitable a, IHitable b)
         {
             if (a == null || b == null)
             {
@@ -152,7 +152,7 @@ namespace Raytracer.Hitables
         }
 
         public AABB Box;
-        public Hitable Left;
-        public Hitable Right;
+        public IHitable Left;
+        public IHitable Right;
     }
 }

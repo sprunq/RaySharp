@@ -4,10 +4,10 @@ using Raytracer.Materials;
 
 namespace Raytracer.Hitables
 {
-    public class Box : Hitable
+    public class Box : IHitable
     {
         public Box() { }
-        public Box(Vector3d p0, Vector3d p1, Material material)
+        public Box(Vector3d p0, Vector3d p1, IMaterial material)
         {
             _boxMin = p0;
             _boxMax = p1;
@@ -23,13 +23,13 @@ namespace Raytracer.Hitables
             _sides.Add(new YZRect(new Vector2d(p0.Y, p1.Y), new Vector2d(p0.Z, p1.Z), p0.X, material));
         }
 
-        public override bool BoundingBox(ref AABB outputBox)
+        public bool BoundingBox(ref AABB outputBox)
         {
             outputBox = new AABB(_boxMin, _boxMax);
             return true;
         }
 
-        public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
+        public bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
             return _sides.Hit(ray, tMin, tMax, ref rec);
         }

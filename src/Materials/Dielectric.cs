@@ -6,7 +6,7 @@ using Raytracer.Utility;
 
 namespace Raytracer.Hitables
 {
-    public class Dielectric : Material
+    public class Dielectric : IMaterial
     {
         public Dielectric(double indexOfRefraction)
         {
@@ -20,7 +20,7 @@ namespace Raytracer.Hitables
             _color = color;
         }
 
-        public override bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3d attenuation, out Ray scattered)
+        public bool Scatter(Ray rayIn, ref HitRecord rec, out Vector3d attenuation, out Ray scattered)
         {
             attenuation = _color;
             double refractionRatio = rec.frontFace ? (1.0 / _indexOfRefraction) : _indexOfRefraction;
@@ -33,9 +33,9 @@ namespace Raytracer.Hitables
             Vector3d direction;
 
             if (cannotRefract || reflectance(cosTheta, refractionRatio) > RandomHelper.RandomDouble())
-                direction = reflect(unitDirection, rec.normal);
+                direction = Ray.reflect(unitDirection, rec.normal);
             else
-                direction = refract(unitDirection, rec.normal, refractionRatio);
+                direction = Ray.refract(unitDirection, rec.normal, refractionRatio);
 
             scattered = new Ray(rec.position, direction);
             return true;

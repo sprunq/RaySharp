@@ -4,13 +4,13 @@ using Raytracer.Materials;
 
 namespace Raytracer.Hitables
 {
-    public class XYRect : Hitable
+    public class XYRect : IHitable
     {
         public XYRect()
         {
         }
 
-        public XYRect(Vector2d x, Vector2d y, double offset, Material mat)
+        public XYRect(Vector2d x, Vector2d y, double offset, IMaterial mat)
         {
             _x0 = x.X;
             _x1 = x.Y;
@@ -20,7 +20,7 @@ namespace Raytracer.Hitables
             _mat = mat;
         }
 
-        public override bool Hit(Ray r, double t0, double t1, ref HitRecord rec)
+        public bool Hit(Ray r, double t0, double t1, ref HitRecord rec)
         {
             double t = (_k - r.Origin.Z) / r.Direction.Z;
             if (t < t0 || t > t1)
@@ -46,7 +46,7 @@ namespace Raytracer.Hitables
             return true;
         }
 
-        public override bool BoundingBox(ref AABB box)
+        public bool BoundingBox(ref AABB box)
         {
             box = new AABB(new Vector3d(_x0, _y0, _k - 0.0001), new Vector3d(_x1, _y1, _k + 0.0001));
             return true;
@@ -57,16 +57,16 @@ namespace Raytracer.Hitables
         private double _y0;
         private double _y1;
         private double _k;
-        private Material _mat;
+        private IMaterial _mat;
     }
 
-    class XZRect : Hitable
+    class XZRect : IHitable
     {
         public XZRect()
         {
         }
 
-        public XZRect(Vector2d x, Vector2d z, double offset, Material mat)
+        public XZRect(Vector2d x, Vector2d z, double offset, IMaterial mat)
         {
             _x0 = x.X;
             _x1 = x.Y;
@@ -76,7 +76,7 @@ namespace Raytracer.Hitables
             _mat = mat;
         }
 
-        public override bool Hit(Ray r, double t0, double t1, ref HitRecord rec)
+        public bool Hit(Ray r, double t0, double t1, ref HitRecord rec)
         {
             double t = (_k - r.Origin.Y) / r.Direction.Y;
             if (t < t0 || t > t1)
@@ -102,7 +102,7 @@ namespace Raytracer.Hitables
             return true;
         }
 
-        public override bool BoundingBox(ref AABB box)
+        public bool BoundingBox(ref AABB box)
         {
             box = new AABB(new Vector3d(_x0, _k - 0.0001, _z0), new Vector3d(_x1, _k + 0.0001, _z0));
             return true;
@@ -113,17 +113,17 @@ namespace Raytracer.Hitables
         private double _z0;
         private double _z1;
         private double _k;
-        private Material _mat;
+        private IMaterial _mat;
     }
 
 
-    class YZRect : Hitable
+    class YZRect : IHitable
     {
         public YZRect()
         {
         }
 
-        public YZRect(Vector2d y, Vector2d z, double offset, Material mat)
+        public YZRect(Vector2d y, Vector2d z, double offset, IMaterial mat)
         {
             _y0 = y.X;
             _y1 = y.Y;
@@ -133,7 +133,7 @@ namespace Raytracer.Hitables
             _mat = mat;
         }
 
-        public override bool Hit(Ray r, double t0, double t1, ref HitRecord rec)
+        public bool Hit(Ray r, double t0, double t1, ref HitRecord rec)
         {
             double t = (_k - r.Origin.X) / r.Direction.X;
             if (t < t0 || t > t1)
@@ -159,7 +159,7 @@ namespace Raytracer.Hitables
             return true;
         }
 
-        public override bool BoundingBox(ref AABB box)
+        public bool BoundingBox(ref AABB box)
         {
             box = new AABB(new Vector3d(_k - 0.0001, _y0, _z0), new Vector3d(_k + 0.0001, _y1, _z1));
             return true;
@@ -170,7 +170,7 @@ namespace Raytracer.Hitables
         private double _z0;
         private double _z1;
         private double _k;
-        private Material _mat;
+        private IMaterial _mat;
     }
 
 

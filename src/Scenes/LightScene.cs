@@ -21,7 +21,7 @@ namespace Raytracer.Scenes
 
             // World
             world = new();
-            List<Hitable> spheres = new();
+            List<IHitable> spheres = new();
             background = new Vector3d(0.2);
 
             // Skybox

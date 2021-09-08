@@ -1,20 +1,19 @@
 using OpenTK.Mathematics;
 using Raytracer.Core;
-using Raytracer.Hitables;
 
-namespace Raytracer.Instances
+namespace Raytracer.Hitables.Instances
 {
-    public class Translate : Hitable
+    public class Translate : IHitable
     {
         public Translate() { }
 
-        public Translate(Hitable hitable, Vector3d offset)
+        public Translate(IHitable hitable, Vector3d offset)
         {
             _hitable = hitable;
             _offset = offset;
         }
 
-        public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
+        public bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
             Ray movedRay = new(ray.Origin - _offset, ray.Direction);
             if (!_hitable.Hit(movedRay, tMin, tMax, ref rec))
@@ -25,7 +24,7 @@ namespace Raytracer.Instances
             return true;
         }
 
-        public override bool BoundingBox(ref AABB outputBox)
+        public bool BoundingBox(ref AABB outputBox)
         {
             if (!_hitable.BoundingBox(ref outputBox))
                 return false;
@@ -35,7 +34,7 @@ namespace Raytracer.Instances
             return true;
         }
 
-        private Hitable _hitable;
+        private IHitable _hitable;
         private Vector3d _offset;
     }
 }

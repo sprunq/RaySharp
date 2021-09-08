@@ -44,7 +44,7 @@ namespace Raytracer.Scenes
 
                     if ((center - new Vector3d(4, 0.2, 0)).Length > 0.9)
                     {
-                        Material material;
+                        IMaterial material;
 
                         if (materialType < 0.8)
                         {

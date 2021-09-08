@@ -8,7 +8,7 @@ namespace Raytracer.Hitables
     {
         public Vector3d position;
         public Vector3d normal;
-        public Material material;
+        public IMaterial material;
         public double t;
         public double u;
         public double v;
@@ -21,9 +21,9 @@ namespace Raytracer.Hitables
         }
     };
 
-    public abstract class Hitable
+    public interface IHitable
     {
-        public abstract bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec);
-        public abstract bool BoundingBox(ref AABB outputBox);
+        bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec);
+        bool BoundingBox(ref AABB outputBox);
     }
 }
