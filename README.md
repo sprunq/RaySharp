@@ -1,6 +1,6 @@
 # RaySharp
 
-![Dragon at night](Pictures/dragon_800_samples.png)
+![Lucy and Dragon](Pictures/LucyDragonBox.png)
 
 ### What is this?
 
