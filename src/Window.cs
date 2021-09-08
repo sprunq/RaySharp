@@ -14,23 +14,6 @@ namespace Raytracer
 {
     public class Window : GameWindow
     {
-        private Raytracer _raytracer;
-        private Vector2i _mdPos;
-        private Vector2i _muPos;
-        private Vector2 _textureOffset;
-        private Shader _shader;
-        private LiveTexture _previewTexture;
-        private int _elementBufferObject;
-        private int _vertexBufferObject;
-        private int _vertexArrayObject;
-        private float _zoom;
-        private float[] _textureVertices;
-        private readonly uint[] _textureIndices =
-        {
-            0, 1, 3,
-            1, 2, 3
-        };
-
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings, Raytracer raytracer)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -256,5 +239,22 @@ namespace Raytracer
             helpMessage += "\n";
             Console.WriteLine(helpMessage);
         }
+
+        private Raytracer _raytracer;
+        private Vector2i _mdPos;
+        private Vector2i _muPos;
+        private Vector2 _textureOffset;
+        private Shader _shader;
+        private LiveTexture _previewTexture;
+        private int _elementBufferObject;
+        private int _vertexBufferObject;
+        private int _vertexArrayObject;
+        private float _zoom;
+        private float[] _textureVertices;
+        private readonly uint[] _textureIndices =
+        {
+            0, 1, 3,
+            1, 2, 3
+        };
     }
 }

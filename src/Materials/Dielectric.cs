@@ -8,9 +8,6 @@ namespace Raytracer.Hitables
 {
     public class Dielectric : Material
     {
-        private double _indexOfRefraction;
-        private Vector3d _color;
-
         public Dielectric(double indexOfRefraction)
         {
             _indexOfRefraction = indexOfRefraction;
@@ -51,5 +48,8 @@ namespace Raytracer.Hitables
             r0 = r0 * r0;
             return r0 + (1 - r0) * Math.Pow((1 - cosine), 5);
         }
+
+        private double _indexOfRefraction;
+        private Vector3d _color;
     }
 }

@@ -7,10 +7,6 @@ namespace Raytracer.Hitables
 {
     public class Sphere : Hitable
     {
-        private Vector3d _center;
-        private double _radius;
-        private Material _material;
-
         public Sphere() { }
 
         public Sphere(Vector3d center, double radius, Material material)
@@ -73,5 +69,8 @@ namespace Raytracer.Hitables
             return true;
         }
 
+        private Vector3d _center;
+        private double _radius;
+        private Material _material;
     }
 }

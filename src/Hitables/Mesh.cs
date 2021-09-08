@@ -12,12 +12,6 @@ namespace Raytracer.Hitables
 {
     public class Mesh : Hitable
     {
-        public int NumberOfFaces;
-        private BVHNode _faces;
-        private string _objPath;
-        private Material _material;
-        private double _scale;
-
         public Mesh() { }
 
         public Mesh(string objPath, Material material, double scale)
@@ -86,5 +80,11 @@ namespace Raytracer.Hitables
             // Model with 250k faces: Loading Faces 70ms, BVH Node Construction 7200ms
             _faces = new(faces);
         }
+
+        public int NumberOfFaces;
+        private BVHNode _faces;
+        private string _objPath;
+        private Material _material;
+        private double _scale;
     }
 }

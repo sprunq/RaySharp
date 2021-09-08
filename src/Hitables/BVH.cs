@@ -10,10 +10,6 @@ namespace Raytracer.Hitables
 {
     public class BVHNode : Hitable
     {
-        public AABB Box;
-        public Hitable Left;
-        public Hitable Right;
-
         public BVHNode(List<Hitable> hitables)
         {
             var axis = (int)(RandomHelper.RandomInt(0, 3));
@@ -154,5 +150,9 @@ namespace Raytracer.Hitables
 
             return 1;
         }
+
+        public AABB Box;
+        public Hitable Left;
+        public Hitable Right;
     }
 }

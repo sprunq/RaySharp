@@ -7,11 +7,6 @@ namespace Raytracer.Hitables
 {
     public class Triangle : Hitable
     {
-        private Material _material;
-
-        public Vector3d v0, v1, v2;
-        private Vector3d _normal;
-
         public Triangle() { }
 
         public Triangle(Vector3d x, Vector3d y, Vector3d z, Vector3d normal, Material material)
@@ -25,12 +20,6 @@ namespace Raytracer.Hitables
 
         public override bool Hit(Ray ray, double tMin, double tMax, ref HitRecord rec)
         {
-            /*
-            www.scratchapixel.com/lessons/3d-basic-rendering/
-            ray-tracing-rendering-a-triangle/
-            moller-trumbore-ray-triangle-intersection
-            */
-
             var v0v1 = v1 - v0;
             var v0v2 = v2 - v0;
 
@@ -90,5 +79,8 @@ namespace Raytracer.Hitables
             return true;
         }
 
+        private Material _material;
+        private Vector3d v0, v1, v2;
+        private Vector3d _normal;
     }
 }

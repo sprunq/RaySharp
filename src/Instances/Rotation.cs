@@ -15,13 +15,6 @@ namespace Raytracer.Instances
 
     public class Rotate : Hitable
     {
-        private Hitable _material;
-        private double _sinTheta;
-        private double _cosTheta;
-        private bool _hasBox;
-        private Axis _axis;
-        private AABB _boundingBox;
-
         public Rotate() { }
 
         public Rotate(Hitable hitable, double angle, Axis axis)
@@ -161,5 +154,12 @@ namespace Raytracer.Instances
             outputBox = _boundingBox;
             return _hasBox;
         }
+
+        private Hitable _material;
+        private double _sinTheta;
+        private double _cosTheta;
+        private bool _hasBox;
+        private Axis _axis;
+        private AABB _boundingBox;
     }
 }

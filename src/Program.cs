@@ -9,17 +9,17 @@ namespace Raytracer
     {
         static void Main(string[] args)
         {
-            Raytracer raytracer = new(imageWidth: 400,
+            Raytracer raytracer = new(imageWidth: 1200,
                                       aspectRatio: 1,
                                       samples: 1,
-                                      maxDepth: 50,
+                                      maxDepth: 100,
                                       shouldDenoise: true,
                                       denoiserPath: Path.GetFullPath(@"..\Denoiser\"),
                                       outputName: "output.png",
                                       outputFolder: Path.GetFullPath(@"..\Renders"),
                                       printProgress: true);
 
-            raytracer.LoadScene(Scene.CornellBox);
+            raytracer.LoadScene(Scene.LightScene);
 
             var nativeWindowSettings = new NativeWindowSettings()
             {

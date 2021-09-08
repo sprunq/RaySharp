@@ -6,9 +6,6 @@ namespace Raytracer.Instances
 {
     public class Translate : Hitable
     {
-        private Hitable _hitable;
-        private Vector3d _offset;
-
         public Translate() { }
 
         public Translate(Hitable hitable, Vector3d offset)
@@ -37,5 +34,8 @@ namespace Raytracer.Instances
                                  outputBox.Maximum + _offset);
             return true;
         }
+
+        private Hitable _hitable;
+        private Vector3d _offset;
     }
 }

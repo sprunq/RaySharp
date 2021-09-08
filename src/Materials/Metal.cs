@@ -7,9 +7,6 @@ namespace Raytracer.Hitables
 {
     public class Metal : Material
     {
-        private Vector3d _albedo;
-        private double _fuzziness;
-
         public Metal(Vector3d albedo, double fuzziness)
         {
             _albedo = albedo;
@@ -23,5 +20,8 @@ namespace Raytracer.Hitables
             attenuation = _albedo;
             return (Vector3d.Dot(scattered.Direction, rec.normal) > 0);
         }
+
+        private Vector3d _albedo;
+        private double _fuzziness;
     }
 }

@@ -6,13 +6,6 @@ namespace Raytracer.Hitables
 {
     public class XYRect : Hitable
     {
-        private double _x0;
-        private double _x1;
-        private double _y0;
-        private double _y1;
-        private double _k;
-        private Material _mat;
-
         public XYRect()
         {
         }
@@ -58,17 +51,17 @@ namespace Raytracer.Hitables
             box = new AABB(new Vector3d(_x0, _y0, _k - 0.0001), new Vector3d(_x1, _y1, _k + 0.0001));
             return true;
         }
+
+        private double _x0;
+        private double _x1;
+        private double _y0;
+        private double _y1;
+        private double _k;
+        private Material _mat;
     }
 
     class XZRect : Hitable
     {
-        private double _x0;
-        private double _x1;
-        private double _z0;
-        private double _z1;
-        private double _k;
-        private Material _mat;
-
         public XZRect()
         {
         }
@@ -114,18 +107,18 @@ namespace Raytracer.Hitables
             box = new AABB(new Vector3d(_x0, _k - 0.0001, _z0), new Vector3d(_x1, _k + 0.0001, _z0));
             return true;
         }
+
+        private double _x0;
+        private double _x1;
+        private double _z0;
+        private double _z1;
+        private double _k;
+        private Material _mat;
     }
 
 
     class YZRect : Hitable
     {
-        private double _y0;
-        private double _y1;
-        private double _z0;
-        private double _z1;
-        private double _k;
-        private Material _mat;
-
         public YZRect()
         {
         }
@@ -171,6 +164,13 @@ namespace Raytracer.Hitables
             box = new AABB(new Vector3d(_k - 0.0001, _y0, _z0), new Vector3d(_k + 0.0001, _y1, _z1));
             return true;
         }
+
+        private double _y0;
+        private double _y1;
+        private double _z0;
+        private double _z1;
+        private double _k;
+        private Material _mat;
     }
 
 

@@ -7,8 +7,6 @@ namespace Raytracer.Hitables
 {
     public class Light : Material
     {
-        private Texture _emit;
-
         public Light(Texture emit)
         {
             _emit = emit;
@@ -33,5 +31,6 @@ namespace Raytracer.Hitables
             return _emit.Value(u, v, p);
         }
 
+        private Texture _emit;
     }
 }

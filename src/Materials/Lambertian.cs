@@ -8,8 +8,6 @@ namespace Raytracer.Hitables
 {
     public class Lambertian : Material
     {
-        private Texture _albedo;
-
         public Lambertian(Vector3d albedo)
         {
             _albedo = new SolidColor(albedo);
@@ -33,5 +31,7 @@ namespace Raytracer.Hitables
             attenuation = _albedo.Value(rec.u, rec.v, rec.position);
             return true;
         }
+
+        private Texture _albedo;
     }
 }

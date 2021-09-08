@@ -25,16 +25,6 @@ namespace Raytracer
         public float Progress;
         public int Samples;
 
-        private Vector3d _background;
-        public double _apectRatio;
-        private int _maxDepth;
-        private bool _denoise;
-        private string _denoiserPath;
-        private string _outputName;
-        private string _outputFolder;
-        private bool _printProgress;
-
-
         public Raytracer(int imageWidth, double aspectRatio, int samples, int maxDepth, bool shouldDenoise, string denoiserPath, string outputName, string outputFolder, bool printProgress)
         {
             ImageWidth = imageWidth;
@@ -261,5 +251,14 @@ namespace Raytracer
 
             return chunks;
         }
+
+        private Vector3d _background;
+        public double _apectRatio;
+        private int _maxDepth;
+        private bool _denoise;
+        private string _denoiserPath;
+        private string _outputName;
+        private string _outputFolder;
+        private bool _printProgress;
     }
 }
