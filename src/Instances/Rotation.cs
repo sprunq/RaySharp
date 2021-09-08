@@ -1,9 +1,7 @@
 using System;
-using System.Numerics;
 using OpenTK.Mathematics;
 using Raytracer.Core;
 using Raytracer.Hitables;
-using Raytracer.Materials;
 using Raytracer.Utility;
 
 namespace Raytracer.Instances

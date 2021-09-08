@@ -1,9 +1,9 @@
 using Raytracer.Core;
 using Raytracer.Hitables;
 using Raytracer.Textures;
-using OpenTK.Mathematics;
 using Raytracer.Utility;
 using Raytracer.Materials;
+using OpenTK.Mathematics;
 
 namespace Raytracer.Scenes
 {
