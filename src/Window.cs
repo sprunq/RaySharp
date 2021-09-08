@@ -78,13 +78,16 @@ namespace Raytracer
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            if (!_raytracer.FinishedRendering)
+            if (_raytracer.UpdateFrame)
             {
                 UpdateLiveTexture();
                 ulong totalRays = Ray.GetTotalRays();
                 Title = $"Raytracer [{_raytracer.Progress.ToString("0.00%")}] Rays: {((decimal)totalRays).DynamicPostFix()}";
+                _raytracer.UpdateFrame = false;
             }
-            Thread.Sleep(10);
+
+            // Sleeping decreases the standby cpu usage from 10% to 0.5%
+            Thread.Sleep(1);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -96,12 +99,11 @@ namespace Raytracer
             {
                 Close();
             }
-            else if (input.IsKeyDown(Keys.H) || input.IsKeyDown(Keys.F1))
+            else if (input.IsKeyPressed(Keys.H) || input.IsKeyPressed(Keys.F1))
             {
                 PrintHelpMessage();
-                Thread.Sleep(100);
             }
-            else if (input.IsKeyDown(Keys.Enter))
+            else if (input.IsKeyPressed(Keys.Enter))
             {
                 _raytracer.SaveImage();
             }
@@ -125,23 +127,20 @@ namespace Raytracer
                 _textureOffset.X -= 0.05f;
                 UpdateLiveTexture();
             }
-            else if (input.IsKeyDown(Keys.R))
+            else if (input.IsKeyPressed(Keys.R))
             {
-                Task.Run(() => _raytracer.RenderSpiral());
-                Thread.Sleep(100);
+                Task.Run(() => _raytracer.RenderSpiral(20));
             }
-            else if (input.IsKeyDown(Keys.C))
+            else if (input.IsKeyPressed(Keys.C))
             {
                 Ray.ResetRayCount();
                 _raytracer.RenderImage = new(_raytracer.ImageWidth, _raytracer.ImageHeight);
                 UpdateLiveTexture();
-                Thread.Sleep(100);
             }
             else if (input.IsKeyDown(Keys.Up))
             {
                 _raytracer.Samples++;
                 Console.WriteLine($"Increased samples to {_raytracer.Samples}");
-                Thread.Sleep(10);
             }
             else if (input.IsKeyDown(Keys.Down))
             {
@@ -149,21 +148,18 @@ namespace Raytracer
                 if (_raytracer.Samples < 1)
                     _raytracer.Samples = 1;
                 Console.WriteLine($"Decresed samples to {_raytracer.Samples}");
-                Thread.Sleep(10);
             }
-            else if (input.IsKeyDown(Keys.Right))
+            else if (input.IsKeyPressed(Keys.Right))
             {
                 _raytracer.Samples++;
                 Console.WriteLine($"Increased samples to {_raytracer.Samples}");
-                Thread.Sleep(200);
             }
-            else if (input.IsKeyDown(Keys.Left))
+            else if (input.IsKeyPressed(Keys.Left))
             {
                 _raytracer.Samples--;
                 if (_raytracer.Samples < 1)
                     _raytracer.Samples = 1;
                 Console.WriteLine($"Decreased samples to {_raytracer.Samples}");
-                Thread.Sleep(200);
             }
         }
 

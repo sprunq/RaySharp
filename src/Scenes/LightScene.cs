@@ -10,7 +10,6 @@ namespace Raytracer.Scenes
     {
         public static void LightScene(ref double _aspectRatio, ref Vector3d background, out ObjectList world, out Camera camera)
         {
-            _aspectRatio = 3.0 / 2.0;
             Vector3d lookfrom = new Vector3d(-10, 2, 0);
             Vector3d lookat = new(0, 1.8, 0);
             Vector3d vup = new(0, 1, 0);
