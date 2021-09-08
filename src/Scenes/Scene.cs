@@ -1,7 +1,7 @@
 using Raytracer.Hitables;
-using OpenTK.Mathematics;
-using Raytracer.Instances;
 using Raytracer.Materials;
+using Raytracer.Instances;
+using OpenTK.Mathematics;
 
 namespace Raytracer.Scenes
 {
@@ -21,4 +21,3 @@ namespace Raytracer.Scenes
         }
     }
 }
-

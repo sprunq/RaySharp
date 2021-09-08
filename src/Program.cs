@@ -9,23 +9,22 @@ namespace Raytracer
     {
         static void Main(string[] args)
         {
-            Raytracer raytracer = new(imageWidth: 800,
-                                      aspectRatio: 3.0 / 2.0,
+            Raytracer raytracer = new(imageWidth: 400,
+                                      aspectRatio: 1,
                                       samples: 1,
-                                      maxDepth: 100,
+                                      maxDepth: 50,
                                       shouldDenoise: true,
                                       denoiserPath: Path.GetFullPath(@"..\Denoiser\"),
                                       outputName: "output.png",
                                       outputFolder: Path.GetFullPath(@"..\Renders"),
                                       printProgress: true);
 
-            raytracer.LoadScene(Scene.NightDragon);
+            raytracer.LoadScene(Scene.CornellBox);
 
             var nativeWindowSettings = new NativeWindowSettings()
             {
                 Size = new Vector2i(raytracer.ImageWidth, raytracer.ImageHeight),
                 WindowBorder = OpenTK.Windowing.Common.WindowBorder.Fixed,
-                Title = "Raytracer",
             };
 
             using (var window = new Window(GameWindowSettings.Default, nativeWindowSettings, raytracer))

@@ -82,7 +82,7 @@ namespace Raytracer
             {
                 UpdateLiveTexture();
                 ulong totalRays = Ray.GetTotalRays();
-                Title = $"Raytracer [{_raytracer.Progress.ToString("0.00%")}] Rays: {((decimal)totalRays).DynamicPrefix()}";
+                Title = $"Raytracer [{_raytracer.Progress.ToString("0.00%")}] Rays: {((decimal)totalRays).DynamicPostFix()}";
             }
             Thread.Sleep(10);
         }

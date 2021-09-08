@@ -1,11 +1,11 @@
 using Raytracer.Core;
 using Raytracer.Hitables;
 using Raytracer.Textures;
-using OpenTK.Mathematics;
 using Raytracer.Utility;
 using Raytracer.Materials;
-using System.Collections.Generic;
 using Raytracer.Instances;
+using System.Collections.Generic;
+using OpenTK.Mathematics;
 
 namespace Raytracer.Scenes
 {
@@ -17,7 +17,7 @@ namespace Raytracer.Scenes
             Vector3d lookat = new(0, 11.5, 0);
             Vector3d vup = new(0, 1, 0);
             var focusDist = 50;
-            var aperture = 0.2;
+            var aperture = 0.3;
             var fov = 55;
 
             camera = new(lookfrom, lookat, vup, fov, _aspectRatio, aperture, focusDist);
@@ -41,12 +41,12 @@ namespace Raytracer.Scenes
 
             // Models
             // Dragon
-            if (false)
+            if (true)
             {
                 var matDragonL = new Lambertian(new Vector3d(0.6, 0, 0.8));
                 var matDragonM = new Metal(new Vector3d(0.7, 0, 1), 0.1);
-                var matDragonG = new Dielectric(1.5, new Vector3d(0.7, 0, 1));
-                var hModel = new Mesh(@"..\Models\xyzrgb_dragon.obj", matDragonM, 0.2);
+                var matDragonG = new Dielectric(1.5, new Vector3d(1, 0, 1));
+                var hModel = new Mesh(@"..\Models\bunny.obj", matDragonG, 0.2);
                 var roXModel = new Rotate(hModel, 0, Axis.X);
                 var roYModel = new Rotate(roXModel, 160, Axis.Y);
                 var trModel = new Translate(roYModel, new Vector3d(0, 8, 4));
@@ -80,7 +80,7 @@ namespace Raytracer.Scenes
                             {
                                 // light
                                 var albedo = Vector3Helper.RandomVec3();
-                                var intensity = RandomHelper.RandomDouble(1, 5);
+                                var intensity = RandomHelper.RandomDouble(1, 7);
                                 material = new Light(albedo * intensity);
                                 spheres.Add(new Sphere(center, sphereSize, material));
                             }

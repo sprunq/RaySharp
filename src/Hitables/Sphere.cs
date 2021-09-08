@@ -1,5 +1,4 @@
 using System;
-using System.Numerics;
 using OpenTK.Mathematics;
 using Raytracer.Core;
 using Raytracer.Materials;
