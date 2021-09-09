@@ -9,6 +9,7 @@ using System;
 using OpenTK.Mathematics;
 using Raytracer.Core;
 using Raytracer.Utility;
+using Raytracer.Scenes;
 
 namespace Raytracer
 {
@@ -64,11 +65,11 @@ namespace Raytracer
             if (_raytracer.UpdateFrame)
             {
                 UpdateLiveTexture();
-                ulong totalRays = Ray.GetTotalRays();
-                Title = $"Raytracer [{_raytracer.Progress.ToString("0.00%")}] Rays: {((decimal)totalRays).DynamicPostFix()}";
                 _raytracer.UpdateFrame = false;
             }
 
+            ulong totalRays = Ray.GetTotalRays();
+            Title = $"Raytracer [{_raytracer.Progress.ToString("0.00%")}] Rays: {((decimal)totalRays).DynamicPostFix()}";
             // Sleeping decreases the standby cpu usage from 10% to 0.5%
             Thread.Sleep(1);
         }

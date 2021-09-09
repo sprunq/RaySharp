@@ -90,8 +90,8 @@ namespace Raytracer
                                                                         (float)sampledColor.Y / 255.0f,
                                                                         (float)sampledColor.Z / 255.0f,
                                                                         1);
+                    UpdateFrame = true;
                 });
-                UpdateFrame = true;
             });
 
             stopWatch.Stop();
