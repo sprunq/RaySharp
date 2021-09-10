@@ -105,7 +105,7 @@ namespace Raytracer
             return Task.CompletedTask;
         }
 
-        public Task RenderSpiral(int chunkSize)
+        public Task RenderSpiral(int chunkSize = 40)
         {
             if (InstanceIsRunning)
             {

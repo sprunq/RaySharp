@@ -10,6 +10,7 @@ using OpenTK.Mathematics;
 using Raytracer.Core;
 using Raytracer.Utility;
 using Raytracer.Scenes;
+using System.Diagnostics;
 
 namespace Raytracer
 {
@@ -54,7 +55,7 @@ namespace Raytracer
             GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
 
             _previewTexture = new();
-            _previewTexture.UpdateImage(_raytracer.RenderImage);
+            _previewTexture.UpdateImage(ref _raytracer.RenderImage);
             _previewTexture.Use(TextureUnit.Texture0);
 
             PrintHelpMessage();
@@ -71,7 +72,7 @@ namespace Raytracer
             ulong totalRays = Ray.GetTotalRays();
             Title = $"Raytracer [{_raytracer.Progress.ToString("0.00%")}] Rays: {((decimal)totalRays).DynamicPostFix()}";
             // Sleeping decreases the standby cpu usage from 10% to 0.5%
-            Thread.Sleep(1);
+            Thread.Sleep(10);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -113,12 +114,13 @@ namespace Raytracer
             }
             else if (input.IsKeyPressed(Keys.R))
             {
-                Task.Run(() => _raytracer.RenderSpiral(20));
+                Task.Run(() => _raytracer.RenderSpiral());
             }
             else if (input.IsKeyPressed(Keys.C))
             {
                 Ray.ResetRayCount();
                 _raytracer.RenderImage = new(_raytracer.ImageWidth, _raytracer.ImageHeight);
+                _raytracer.UpdateFrame = true;
                 UpdateLiveTexture();
             }
             else if (input.IsKeyDown(Keys.Up))
@@ -201,7 +203,12 @@ namespace Raytracer
             GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.BindVertexArray(_vertexArrayObject);
-            _previewTexture.UpdateImage(_raytracer.RenderImage);
+
+            if (_raytracer.UpdateFrame)
+            {
+                _previewTexture.UpdateImage(ref _raytracer.RenderImage);
+            }
+
             _previewTexture.Use(TextureUnit.Texture0);
             _shader.Use();
             GL.DrawElements(PrimitiveType.Triangles, _textureIndices.Length, DrawElementsType.UnsignedInt, 0);
